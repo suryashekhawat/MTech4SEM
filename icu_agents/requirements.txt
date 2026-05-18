@@ -1,0 +1,11 @@
+langgraph
+langchain
+langchain-openai
+pandas
+numpy
+faker
+pydantic
+streamlit
+matplotlib
+scikit-learn
+networkx

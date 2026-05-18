@@ -1,0 +1,5 @@
+OPENAI_MODEL = "gpt-4o-mini"
+
+MAX_ICU_HOURS = 72
+
+SEED = 42

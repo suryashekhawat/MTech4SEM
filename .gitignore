@@ -1,0 +1,65 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+.venv/
+env/
+.env
+.env.*
+!.env.example
+pip-log.txt
+pip-delete-this-directory.txt
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+*.egg-info/
+.eggs/
+dist/
+build/
+
+# ICU agents — generated outputs & local Airflow
+icu_agents/output/
+icu_agents/.airflow/
+icu_agents/airflow/logs/
+icu_agents/airflow/airflow.cfg
+icu_agents/airflow/webserver_config.py
+icu_agents/airflow/airflow.db
+
+# Docker / Airflow runtime
+postgres-db-volume/
+
+# LaTeX (project-report)
+project-report/*.aux
+project-report/*.bbl
+project-report/*.blg
+project-report/*.fdb_latexmk
+project-report/*.fls
+project-report/*.lof
+project-report/*.log
+project-report/*.lot
+project-report/*.out
+project-report/*.synctex.gz
+project-report/*.toc
+project-report/*.xdv
+# Uncomment to ignore built PDF:
+# project-report/main.pdf
+
+# OS & editors
+.DS_Store
+Thumbs.db
+desktop.ini
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# Secrets
+*.pem
+credentials.json
+secrets.json
