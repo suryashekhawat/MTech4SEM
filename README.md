@@ -3,6 +3,9 @@
 **Generative clinical narrative and risk explanation from ICU time-series data** — M.Tech project integrating the [eICU Collaborative Research Database demo](https://physionet.org/content/eicu-crd-demo/2.0.1/) with a multi-agent Python stack and Apache Airflow workflows.
 
 > **Architecture diagrams:** see **[ARCHITECTURE.md](ARCHITECTURE.md)** for Mermaid flowcharts (data flow, agents, Airflow DAGs, repo layout).
+<img width="940" height="462" alt="image" src="https://github.com/user-attachments/assets/1203af53-0874-4778-a1f1-fd77864481b4" />
+<img width="935" height="476" alt="image" src="https://github.com/user-attachments/assets/b0ef203d-c122-4015-93f2-7bf4d7a60c68" />
+
 
 ---
 
