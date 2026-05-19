@@ -11,8 +11,11 @@ x-airflow-common: &airflow-common
     AIRFLOW__CORE__LOAD_EXAMPLES: "false"
     AIRFLOW__CORE__DAGS_FOLDER: /opt/airflow/icu_agents/airflow/dags
     AIRFLOW__API__AUTH_BACKENDS: airflow.api.auth.backend.basic_auth,airflow.api.auth.backend.session
+    ICU_DATA_SOURCE: eicu
+    EICU_DEMO_DIR: /opt/airflow/data/eicu-crd-demo
   volumes:
     - ./:/opt/airflow/icu_agents
+    - ../data/eicu-crd-demo:/opt/airflow/data/eicu-crd-demo
   depends_on:
     postgres:
       condition: service_healthy

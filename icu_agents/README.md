@@ -1,6 +1,8 @@
-# ICU Multi-Agent Synthetic Data Generation
+# ICU Agents
 
-This project generates synthetic ICU patients using specialized agents (vitals, labs, radiology, respiratory, risk, narrative), and includes Airflow DAGs for orchestration.
+Multi-agent ICU pipeline: **eICU-CRD demo** (SQLite) or **synthetic** patients → risk scoring → clinical narratives. Includes Airflow DAGs for batch and temporal reasoning.
+
+**Repo-level docs:** [../README.md](../README.md) · **Architecture diagrams:** [../ARCHITECTURE.md](../ARCHITECTURE.md)
 
 ## 1) Local Setup (Windows native: app + Streamlit)
 
@@ -17,10 +19,14 @@ pip install -r requirements.txt
 ## 2) Run the Core App
 
 ```bash
-python app.py
+# eICU demo stay (default when ICU_DATA_SOURCE=eicu)
+python app.py --source eicu --stay-id 147784
+
+# Synthetic only
+python app.py --source synthetic
 ```
 
-You should see a generated patient bundle and ICU summary in terminal output.
+You should see a patient bundle and ICU summary in terminal output.
 
 ## 3) Run Streamlit UI
 
@@ -28,7 +34,9 @@ You should see a generated patient bundle and ICU summary in terminal output.
 streamlit run ui/streamlit_app.py
 ```
 
-Open the local URL shown by Streamlit and click **Generate Synthetic ICU Patient**.
+Open the local URL, choose **eicu** or **synthetic**, select a stay (eICU mode), and click **Run ICU Pipeline**.
+
+Ensure `../data/eicu-crd-demo/` exists (see [../scripts/download_eicu_crd_demo.sh](../scripts/download_eicu_crd_demo.sh)).
 
 ## 4) Airflow Setup (Important for Windows users)
 
@@ -122,6 +130,7 @@ docker compose down -v
 Notes:
 
 - DAGs are loaded from `icu_agents/airflow/dags`.
+- eICU data is mounted from `../data/eicu-crd-demo` (`ICU_DATA_SOURCE=eicu` in compose).
 - Output artifacts are written into your local `icu_agents/output` folder via bind mount.
 
 ## 5) DAGs Included

@@ -59,6 +59,9 @@ desktop.ini
 *.swo
 *~
 
+# eICU-CRD demo dataset (PhysioNet v2.0.1 — local only, do not commit)
+data/eicu-crd-demo/
+
 # Secrets
 *.pem
 credentials.json

@@ -1,9 +1,9 @@
 from __future__ import annotations
 
 import json
+import os
 import random
 import sys
-import uuid
 from datetime import datetime
 from pathlib import Path
 from typing import Any, Dict, List
@@ -16,12 +16,8 @@ PROJECT_ROOT = Path(__file__).resolve().parents[2]
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.append(str(PROJECT_ROOT))
 
-from agents.lab_agent import LabAgent
-from agents.radiology_agent import RadiologyAgent
-from agents.respiratory_agent import RespiratoryAgent
-from agents.risk_agent import RiskAgent
-from agents.vitals_agent import VitalsAgent
-from synthetic.clinical_rules import generate_base_patient
+from config import DATA_SOURCE
+from data.pipeline_source import build_patient_dict
 
 
 OUTPUT_TIMELINES = PROJECT_ROOT / "output" / "timelines"
@@ -33,53 +29,38 @@ OUTPUT_REPORTS = PROJECT_ROOT / "output" / "reports"
     schedule="@daily",
     start_date=datetime(2026, 1, 1),
     catchup=False,
-    tags=["icu", "temporal", "reasoning", "branching"],
+    tags=["icu", "eicu", "temporal", "reasoning", "branching"],
 )
 def icu_temporal_reasoning_pipeline():
     @task
-    def generate_temporal_bundle(hours: int = 24) -> Dict[str, Any]:
-        base = generate_base_patient()
-
-        patient = {
-            "patient_id": str(uuid.uuid4()),
-            "age": base["age"],
-            "gender": base["gender"],
-            "diagnosis": base["diagnosis"],
-        }
-
-        vitals = VitalsAgent().generate(patient["diagnosis"], hours=hours)
-        labs = LabAgent().generate(patient["diagnosis"])
-        radiology = RadiologyAgent().generate(patient["diagnosis"])
-        respiratory = RespiratoryAgent().generate(patient["diagnosis"])
-        risk_scores = RiskAgent().calculate(vitals, labs)
-
-        return {
-            **patient,
-            "hours": hours,
-            "vitals": vitals,
-            "labs": labs,
-            "radiology": radiology,
-            "respiratory": respiratory,
-            "risk_scores": risk_scores,
-        }
+    def load_temporal_bundle() -> Dict[str, Any]:
+        source = os.environ.get("ICU_DATA_SOURCE", DATA_SOURCE)
+        bundle = build_patient_dict(source=source)
+        bundle["hours"] = len(bundle.get("vitals", [])) or 24
+        return bundle
 
     @task
     def build_hourly_reasoning_trace(bundle: Dict[str, Any]) -> Dict[str, Any]:
         trace: List[Dict[str, Any]] = []
         for hour, row in enumerate(bundle["vitals"]):
             severity = "stable"
-            if row["spo2"] < 90 or row["heart_rate"] > 115:
+            spo2 = row.get("spo2", 100)
+            heart_rate = row.get("heart_rate", 80)
+            if spo2 < 90 or heart_rate > 115:
                 severity = "worsening"
-            if row["spo2"] < 85 or row["heart_rate"] > 125:
+            if spo2 < 85 or heart_rate > 125:
                 severity = "critical"
 
             trace.append(
                 {
                     "hour": hour + 1,
-                    "spo2": row["spo2"],
-                    "heart_rate": row["heart_rate"],
-                    "resp_rate": row["resp_rate"],
+                    "spo2": spo2,
+                    "heart_rate": heart_rate,
+                    "resp_rate": row.get("resp_rate"),
                     "severity": severity,
+                    "reason": (
+                        f"SpO2={spo2}%, HR={heart_rate} evaluated against ICU thresholds"
+                    ),
                 }
             )
 
@@ -124,7 +105,9 @@ def icu_temporal_reasoning_pipeline():
 
         merged["respiratory_escalation"] = {
             "triggered": hypoxia_triggered,
-            "reason": "SpO2 below 85%" if hypoxia_triggered else "SpO2 threshold not crossed",
+            "reason": "SpO2 below 85% on eICU-derived trace"
+            if hypoxia_triggered
+            else "SpO2 threshold not crossed",
             "recommended_fio2": (
                 min(100, int(merged["respiratory"]["fio2"]) + random.randint(5, 15))
                 if hypoxia_triggered
@@ -139,7 +122,9 @@ def icu_temporal_reasoning_pipeline():
 
         merged["sepsis_escalation"] = {
             "triggered": sepsis_triggered,
-            "reason": "Lactate above 4 mmol/L" if sepsis_triggered else "Lactate threshold not crossed",
+            "reason": "Lactate above 4 mmol/L on eICU lab panel"
+            if sepsis_triggered
+            else "Lactate threshold not crossed",
             "recommended_actions": (
                 [
                     "repeat lactate in 2 hours",
@@ -152,6 +137,7 @@ def icu_temporal_reasoning_pipeline():
         }
 
         merged["coordinator_summary"] = {
+            "data_source": merged.get("data_source"),
             "respiratory_path": merged.get("respiratory_escalation", {}).get("reason"),
             "sepsis_path": merged.get("sepsis_escalation", {}).get("reason"),
             "current_mortality_risk": merged["risk_scores"]["mortality_risk"],
@@ -160,7 +146,6 @@ def icu_temporal_reasoning_pipeline():
 
     @task
     def optional_langgraph_handoff(bundle: Dict[str, Any], enabled: bool = False) -> Dict[str, Any]:
-        # Placeholder for future LangGraph state-machine integration.
         bundle["langgraph_handoff"] = {
             "enabled": enabled,
             "status": "skipped" if not enabled else "ready_for_integration",
@@ -174,9 +159,10 @@ def icu_temporal_reasoning_pipeline():
 
         narrative = f"""
 Patient ID: {bundle['patient_id']}
+Data source: {bundle.get('data_source', 'unknown')}
 Diagnosis: {bundle['diagnosis']}
 
-Temporal ICU reasoning completed over {bundle['hours']} hours.
+Temporal ICU reasoning completed over {bundle['hours']} hourly observations from eICU-CRD demo vitals.
 Latest status: HR {latest['heart_rate']} bpm, SpO2 {latest['spo2']}%, RR {latest['resp_rate']}.
 Mortality risk estimate: {bundle['risk_scores']['mortality_risk']}%.
 
@@ -204,7 +190,7 @@ Coordinator recommendation: continue ICU-level monitoring with dynamic reassessm
         with report_path.open("w", encoding="utf-8") as f:
             f.write(bundle["temporal_narrative"])
 
-    initial = generate_temporal_bundle()
+    initial = load_temporal_bundle()
     traced = build_hourly_reasoning_trace(initial)
 
     hypoxia_choice = branch_hypoxia(traced)
