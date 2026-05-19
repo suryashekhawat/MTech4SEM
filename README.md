@@ -45,16 +45,17 @@ Data lands in `data/eicu-crd-demo/` (SQLite + CSV.gz). The loader auto-decompres
 ### 2. Install `icu_agents`
 
 ```bash
-cd icu_agents
-python -m venv .venv
-source .venv/Scripts/activate   # Windows Git Bash
-# source .venv/bin/activate     # Linux / macOS / WSL
-pip install -r requirements.txt
+# Use the existing venv at repo root (do not create a second one under icu_agents/)
+cd ICU-pipeline
+source venv/Scripts/activate    # Windows Git Bash
+# source venv/bin/activate      # Linux / macOS / WSL
+pip install -r icu_agents/requirements.txt
 ```
 
 ### 3. Run pipeline (eICU stay)
 
 ```bash
+cd icu_agents
 python app.py --source eicu --stay-id 147784
 ```
 
