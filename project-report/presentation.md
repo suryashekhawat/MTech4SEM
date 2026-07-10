@@ -79,13 +79,9 @@ Emphasize temporal leakage — summarizing a full stay at hour 5 using hour 10 l
 
 ## System Architecture
 
-![width:900px](screenshots/01_pipeline_setup.png)
+![width:900px](system_architecture.png)
 
 **Five layers:** Data → Agents → Orchestration → Clinical DSS → Serving (CLI + Streamlit + Airflow)
-
-<!--
-Optional: swap image to system_architecture.png for a diagram-first slide.
--->
 
 ---
 

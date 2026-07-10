@@ -1,0 +1,33 @@
+- generic [ref=f1e2]:
+  - generic [ref=f1e11]:
+    - generic [ref=f1e13]:
+      - paragraph [ref=f1e16]: Data source
+      - generic [ref=f1e18]:
+        - generic [ref=f1e19]:
+          - generic [ref=f1e20]: eicu
+          - combobox "Selected eicu. Data source" [ref=f1e22]
+        - img "open" [ref=f1e24] [cursor=pointer]
+    - generic [ref=f1e27]:
+      - paragraph [ref=f1e30]: eICU patientunitstayid
+      - generic [ref=f1e32]:
+        - generic [ref=f1e33]:
+          - generic [ref=f1e34]: "141764"
+          - combobox "Selected 141764. eICU patientunitstayid" [ref=f1e36]
+        - img "open" [ref=f1e38] [cursor=pointer]
+    - paragraph [ref=f1e43]: Loads vitals, labs, and notes from data/eicu-crd-demo SQLite.
+    - button "Run ICU Pipeline" [ref=f1e46] [cursor=pointer]:
+      - paragraph [ref=f1e48]: Run ICU Pipeline
+  - generic [ref=f1e3]:
+    - banner [ref=f1e51]:
+      - generic [ref=f1e54]:
+        - button "Deploy" [ref=f1e56] [cursor=pointer]:
+          - generic [ref=f1e58]: Deploy
+        - button [ref=f1e60] [cursor=pointer]:
+          - img [ref=f1e61]
+    - generic [ref=f1e64]:
+      - heading "ICU Multi-Agent Patient Pipeline" [level=1] [ref=f1e69]: ICU Multi-Agent Patient Pipeline
+      - alert [ref=f1e73]:
+        - paragraph [ref=f1e78]:
+          - text: Select options in the sidebar and click
+          - strong [ref=f1e79]: Run ICU Pipeline
+          - text: to load data and charts.
