@@ -153,7 +153,18 @@ def _load_diagnosis(conn: sqlite3.Connection, stay_id: int) -> str:
     return "ICU admission (eICU-CRD demo)"
 
 
-def _load_vitals(conn: sqlite3.Connection, stay_id: int, max_hours: int = 24) -> List[Dict[str, Any]]:
+def _avg_field(rows: List[sqlite3.Row], field: str) -> Optional[float]:
+    values = [
+        _safe_float(row[field])
+        for row in rows
+        if row[field] not in (None, "")
+    ]
+    if not values:
+        return None
+    return sum(values) / len(values)
+
+
+def _load_vitals(conn: sqlite3.Connection, stay_id: int, max_hours: int = 72) -> List[Dict[str, Any]]:
     rows = conn.execute(
         """
         SELECT observationoffset, heartrate, temperature, sao2, respiration, systemicsystolic
@@ -169,28 +180,139 @@ def _load_vitals(conn: sqlite3.Connection, stay_id: int, max_hours: int = 24) ->
     if not rows:
         return []
 
+    buckets: Dict[int, List[sqlite3.Row]] = {}
+    for row in rows:
+        hour = int(row["observationoffset"] or 0) // 60
+        if hour >= max_hours:
+            continue
+        buckets.setdefault(hour, []).append(row)
+
     vitals: List[Dict[str, Any]] = []
-    for idx, row in enumerate(rows):
-        if len(vitals) >= max_hours:
-            break
-        offset = int(row["observationoffset"] or 0)
-        hour = max(0, offset // 60)
+    for hour in sorted(buckets):
+        bucket = buckets[hour]
+        heart_rate = _avg_field(bucket, "heartrate")
+        if heart_rate is None or heart_rate <= 0:
+            continue
+        spo2 = _avg_field(bucket, "sao2")
+        resp_rate = _avg_field(bucket, "respiration")
+        temperature = _avg_field(bucket, "temperature")
+        systolic = _avg_field(bucket, "systemicsystolic")
         vitals.append(
             {
                 "timestamp": hour,
-                "heart_rate": int(_safe_float(row["heartrate"], 0)),
-                "temperature": round(_safe_float(row["temperature"], 98.6), 1),
-                "spo2": int(_safe_float(row["sao2"], 97)),
-                "resp_rate": int(_safe_float(row["respiration"], 18)),
-                "systolic_bp": int(_safe_float(row["systemicsystolic"], 120)),
+                "heart_rate": int(round(heart_rate)),
+                "temperature": round(temperature if temperature is not None else 98.6, 1),
+                "spo2": int(round(spo2)) if spo2 is not None else 97,
+                "resp_rate": int(round(resp_rate)) if resp_rate is not None else 18,
+                "systolic_bp": int(round(systolic)) if systolic is not None else 120,
             }
         )
 
-    if len(vitals) > max_hours:
-        step = max(1, len(vitals) // max_hours)
-        vitals = vitals[::step][:max_hours]
-
     return vitals
+
+
+def load_lab_events(conn: sqlite3.Connection, stay_id: int) -> List[Dict[str, Any]]:
+    rows = conn.execute(
+        """
+        SELECT labname, labresult, labresultoffset
+        FROM lab
+        WHERE patientunitstayid = ?
+          AND labresult IS NOT NULL
+          AND labresult != ''
+        ORDER BY labresultoffset
+        """,
+        (stay_id,),
+    ).fetchall()
+
+    events: List[Dict[str, Any]] = []
+    for row in rows:
+        analyte = LAB_NAME_MAP.get(str(row["labname"]).strip().lower())
+        if not analyte:
+            continue
+        value = round(_safe_float(row["labresult"]), 2)
+        hour = int(row["labresultoffset"] or 0) // 60
+        events.append(
+            {
+                "hour": hour,
+                "category": "lab",
+                "analyte": analyte,
+                "value": value,
+                "summary": f"Lab: {analyte} = {value}",
+            }
+        )
+    return events
+
+
+def load_note_events(conn: sqlite3.Connection, stay_id: int) -> List[Dict[str, Any]]:
+    rows = conn.execute(
+        """
+        SELECT NOTETYPE, NOTETEXT, NOTEOFFSET
+        FROM note
+        WHERE patientunitstayid = ?
+          AND NOTETEXT IS NOT NULL
+          AND NOTETEXT != ''
+        ORDER BY NOTEOFFSET
+        """,
+        (stay_id,),
+    ).fetchall()
+
+    events: List[Dict[str, Any]] = []
+    for row in rows:
+        note_type = str(row["NOTETYPE"] or "clinical note")
+        text = str(row["NOTETEXT"]).strip()
+        hour = int(row["NOTEOFFSET"] or 0) // 60
+        preview = text[:200] + ("…" if len(text) > 200 else "")
+        events.append(
+            {
+                "hour": hour,
+                "category": "note",
+                "note_type": note_type,
+                "text": text,
+                "summary": f"Note ({note_type}): {preview}",
+            }
+        )
+    return events
+
+
+def load_respiratory_events(conn: sqlite3.Connection, stay_id: int) -> List[Dict[str, Any]]:
+    rows = conn.execute(
+        """
+        SELECT RESPCHARTOFFSET, RESPCHARTVALUELABEL, RESPCHARTVALUE
+        FROM respiratorycharting
+        WHERE PATIENTUNITSTAYID = ?
+        ORDER BY RESPCHARTOFFSET
+        """,
+        (stay_id,),
+    ).fetchall()
+
+    events: List[Dict[str, Any]] = []
+    for row in rows:
+        label = str(row["RESPCHARTVALUELABEL"] or "").strip()
+        value = _safe_float(row["RESPCHARTVALUE"], 0)
+        if not label or value <= 0:
+            continue
+        hour = int(row["RESPCHARTOFFSET"] or 0) // 60
+        events.append(
+            {
+                "hour": hour,
+                "category": "respiratory",
+                "label": label,
+                "value": value,
+                "summary": f"Respiratory: {label} = {value}",
+            }
+        )
+    return events
+
+
+def load_temporal_events(stay_id: int) -> List[Dict[str, Any]]:
+    with _connect() as conn:
+        events = (
+            load_lab_events(conn, stay_id)
+            + load_note_events(conn, stay_id)
+            + load_respiratory_events(conn, stay_id)
+        )
+    events.sort(key=lambda event: (event["hour"], event["category"]))
+    return events
 
 
 def _load_labs(conn: sqlite3.Connection, stay_id: int) -> Dict[str, float]:

@@ -1,10 +1,29 @@
 \documentclass[12pt]{report}
+\usepackage[T1]{fontenc}
+\usepackage[dvipsnames]{xcolor}
 \usepackage{graphicx}
 \usepackage{hyperref}
 \usepackage{geometry}
 \usepackage{enumitem}
 \usepackage{booktabs}
+\usepackage{array}
+\usepackage{tabularx}
+\usepackage{microtype}
+\usepackage{seqsplit}
+\usepackage{tikz}
+\usepackage{sectsty}
 \geometry{a4paper, margin=1in}
+\setlength{\emergencystretch}{2em}
+
+\definecolor{headingblue}{HTML}{5D9BD5}
+\chapterfont{\color{headingblue}\bfseries}
+\sectionfont{\color{headingblue}\bfseries}
+\subsectionfont{\color{headingblue}\bfseries}
+
+\newcommand{\titleheading}[1]{\textcolor{headingblue}{\textbf{#1}}}
+
+% Break long file paths and identifiers across lines (robust for captions)
+\DeclareRobustCommand{\code}[1]{{\ttfamily\seqsplit{#1}\unskip}}
 
 \newcommand{\projecttitle}{Generative Clinical Narrative and Risk Explanation from ICU Time-Series Data Using Large Language Models}
 \newcommand{\studentname}{Surya Pratap Singh Shekhawat}
@@ -14,31 +33,43 @@
 
 \begin{document}
 
+\thispagestyle{empty}
+\tikz[remember picture,overlay]{
+  \draw[line width=0.8pt]
+    ([xshift=1.25cm,yshift=-1.25cm]current page.north west)
+    rectangle
+    ([xshift=-1.25cm,yshift=1.25cm]current page.south east);
+  \draw[line width=1.6pt]
+    ([xshift=1.05cm,yshift=-1.05cm]current page.north west)
+    rectangle
+    ([xshift=-1.05cm,yshift=1.05cm]current page.south east);
+}
+
 \begin{center}
 \includegraphics[width=2cm]{pes_logo.png} \\[0.5cm]
 \textbf{\Large Dissertation on}\\[1cm]
-\textbf{\LARGE ``\projecttitle''}\\[0.8cm]
-\textbf{\large M.Tech Final Semester Project (4th Sem)}\\
-\textbf{\large Using eICU Collaborative Research Database}\\[1cm]
+\titleheading{\LARGE ``\projecttitle''}\\[0.8cm]
+\titleheading{\large M.Tech Final Semester Project (4th Sem)}\\
+\titleheading{\large Using eICU Collaborative Research Database}\\[1cm]
 
 Submitted in partial fulfilment of the requirements for the award of degree of\\[1cm]
-\textbf{\Large Master of Technology in}\\[1cm]
-\textbf{\Large \degreeprog}\\[1cm]
-\textbf{UE19CS651 -- Project Phase - 2}\\[1cm]
+\titleheading{\Large Master of Technology in}\\[1cm]
+\titleheading{\Large \degreeprog}\\[1cm]
+\titleheading{UE19CS651 -- Project Phase - 2}\\[1cm]
 
-\textbf{Submitted by:}\\
-\textbf{\studentname}\\
-\textbf{\studentid}\\[1cm]
+\titleheading{Submitted by:}\\
+\titleheading{\studentname}\\
+\titleheading{\studentid}\\[1cm]
 
 Under the guidance of\\
-\textbf{\guidename}\\
+\titleheading{\guidename}\\
 Prof., PES University\\[1cm]
 
-January -- May 2026\\[1cm]
+\titleheading{January -- May 2026}\\[1cm]
 
-DEPARTMENT OF COMPUTER SCIENCE AND ENGINEERING\\
-FACULTY OF ENGINEERING\\
-PES UNIVERSITY\\[1cm]
+\titleheading{DEPARTMENT OF COMPUTER SCIENCE AND ENGINEERING}\\
+\titleheading{FACULTY OF ENGINEERING}\\
+\titleheading{PES UNIVERSITY}\\[1cm]
 (Established under Karnataka Act No. 16 of 2013)\\
 Electronic City, Hosur Road, Bengaluru – 560 100, Karnataka, India
 \end{center}
@@ -74,7 +105,9 @@ I would like to express my gratitude to \guidename, Department of Computer Scien
 
 This dissertation presents a system for \textbf{generative clinical narrative and risk explanation} from ICU time-series data using large language models, grounded in the \textbf{eICU Collaborative Research Database} (eICU-CRD). The work transforms structured critical-care measurements---vitals, laboratory results, respiratory support, and derived risk scores---into natural-language summaries that improve interpretability and support clinical decision-making.
 
-The implementation loads the PhysioNet \textbf{eICU-CRD demo v2.0.1} (2,500+ ICU stays, SQLite and CSV.gz tables) into \texttt{data/eicu-crd-demo/} and maps real \texttt{patientunitstayid} records to the \texttt{icu\_agents} pipeline. Specialized agents (\texttt{RiskAgent}, \texttt{NarrativeAgent}, with synthetic fallbacks for sparse modalities) produce coherent patient bundles orchestrated by \texttt{PatientPipeline} and \texttt{data/pipeline\_source.py}. Apache Airflow DAGs apply \textbf{rule-based clinical reasoning}---hourly severity labelling, hypoxia/sepsis branching, and coordinator escalation---on eICU-derived vitals and lactate panels. OpenAI LLM integration and agent frameworks (LangChain/LangGraph) are configured for narrative enrichment and future BeeAI deployment.
+The implementation loads the PhysioNet \textbf{eICU-CRD demo v2.0.1} (2,500+ ICU stays, SQLite and CSV.gz tables) into \code{data/eicu-crd-demo/} and maps real \code{patientunitstayid} records to the \code{icu\_agents} pipeline. Specialized agents (\code{RiskAgent}, \code{NarrativeAgent}, with synthetic fallbacks for sparse modalities) produce coherent patient bundles orchestrated by \code{PatientPipeline} and \code{data/pipeline\_source.py}. Apache Airflow DAGs apply \textbf{rule-based clinical reasoning}---hourly severity labelling, hypoxia/sepsis branching, and coordinator escalation---on eICU-derived vitals and lactate panels.
+
+A \textbf{Streamlit clinical dashboard} provides \textbf{point-in-time ICU snapshots}: clinicians scrub an ICU hour slider (or click interactive Plotly charts) to view vitals, labs, events, and narratives known only up to that hour---avoiding future-data leakage. A \textbf{Critical Patient Brief} module (\code{clinical/critical\_brief.py}) generates SBAR-style summaries, six-hour trend deltas, explainable alerts with evidence, and rule-based recommended actions. \textbf{Doctor dialogue} (\code{ClinicalChatAgent}) accepts clinician feedback; a \textbf{feedback overlay} (\code{clinical/feedback\_overlay.py}) adjusts trajectory, alerts, and actions while preserving underlying measurements. OpenAI LLM integration (LangChain) enriches dialogue when an API key is configured.
 
 \newpage
 
@@ -89,7 +122,9 @@ The implementation loads the PhysioNet \textbf{eICU-CRD demo v2.0.1} (2,500+ ICU
 
 Critical care environments generate high-frequency, multimodal data: vital signs, laboratory results, imaging reports, ventilator settings, and risk assessments. The \textbf{eICU Collaborative Research Database} provides a widely used, de-identified resource for ICU research, while recent large language models (LLMs) enable transformation of structured time-series into readable clinical narratives with temporal reasoning.
 
-This M.Tech final-semester project (4th semester) addresses the gap between raw ICU tables and clinician-facing explanations. The \texttt{icu\_agents} module loads the PhysioNet eICU-CRD demo from local SQLite, maps vitals and laboratories to a shared \texttt{PatientState} schema, and runs rule-based risk scoring plus narrative generation. Apache Airflow DAGs apply hourly severity reasoning and hypoxia/sepsis branching on real time-series, with synthetic fallbacks when charting is sparse. Streamlit and CLI interfaces support stay selection by \texttt{patientunitstayid}. Code is maintained at \url{https://github.com/suryashekhawat/MTech4SEM}.
+This M.Tech final-semester project (4th semester) addresses the gap between raw ICU tables and clinician-facing explanations. The \code{icu\_agents} module loads the PhysioNet eICU-CRD demo from local SQLite, maps vitals and laboratories to a shared \code{PatientState} schema, and runs rule-based risk scoring plus narrative generation. Apache Airflow DAGs apply hourly severity reasoning and hypoxia/sepsis branching on real time-series, with synthetic fallbacks when charting is sparse.
+
+The Streamlit interface supports \textbf{point-in-time clinical review}: all dashboard tabs (Overview, Vitals, Labs \& Risk, Clinical Narrative, Doctor Dialogue) reflect patient state at a selected ICU hour. Interactive Plotly charts allow click-to-scrub timeline navigation. A \textbf{Critical Patient Brief} presents SBAR summaries, six-hour trend deltas, explainable alerts, and escalation actions. Clinician dialogue can revise the automated assessment---trajectory, alerts, and recommendations---via a structured feedback overlay, demonstrating a human-in-the-loop decision-support workflow. Code is maintained at \url{https://github.com/suryashekhawat/MTech4SEM}.
 
 \section{Problem Statement}
 
@@ -101,15 +136,25 @@ The primary objectives of the project are:
 \begin{itemize}[noitemsep]
     \item To transform structured ICU time-series from eICU-CRD into natural-language clinical summaries.
     \item To apply large language models for narrative generation, risk explanation, and temporal reasoning.
-    \item To build a Streamlit UI with modular pages (summary, global overview, time series, patient report, cohort features).
-    \item To design a multi-agent architecture (\texttt{icu\_agents}) for vitals, labs, radiology, respiratory, risk, and narrative outputs.
+    \item To build a Streamlit UI with \textbf{point-in-time ICU snapshots}, interactive time-series charts, and tabbed clinical views (Overview, Vitals, Labs \& Risk, Clinical Narrative, Doctor Dialogue).
+    \item To design a multi-agent architecture (\code{icu\_agents}) for vitals, labs, radiology, respiratory, risk, and narrative outputs.
     \item To integrate Apache Airflow DAGs for batch generation, temporal branching, and artifact persistence.
-    \item To improve interpretability and prototype clinical decision-support workflows (in-progress: BeeAI, OpenAI, natural-language queries).
+    \item To deliver a \textbf{Critical Patient Brief} (SBAR, trend deltas, explainable alerts, recommended actions) for critical-care decision support.
+    \item To support \textbf{clinician dialogue and feedback overlay}, adjusting trajectory and recommendations while preserving factual vitals/labs.
+    \item To improve interpretability and prototype clinical decision-support workflows (OpenAI-backed dialogue, future BeeAI deployment).
 \end{itemize}
 
 \section{Scope of the Project}
 
-The scope includes eICU-CRD demo access (\url{https://physionet.org/content/eicu-crd-demo/2.0.1/}), automated download via \texttt{scripts/download\_eicu\_crd\_demo.py}, SQLite-backed loading in \texttt{icu\_agents/data/eicu\_loader.py}, and dual-mode execution (\texttt{ICU\_DATA\_SOURCE=eicu} or \texttt{synthetic}). Streamlit and CLI entry points support stay selection by \texttt{patientunitstayid}. Airflow DAGs mount the local demo dataset and persist JSON/report/timeline artifacts under \texttt{icu\_agents/output/}. LLM integration is staged for production narrative enrichment. The system is a research prototype and not validated for live clinical deployment.
+The scope includes:
+\begin{itemize}[noitemsep]
+    \item eICU-CRD demo access (\url{https://physionet.org/content/eicu-crd-demo/2.0.1/}), automated download via \code{scripts/download\_eicu\_crd\_demo.py}, and SQLite-backed loading in \code{icu\_agents/data/eicu\_loader.py}.
+    \item Dual-mode execution (\code{ICU\_DATA\_SOURCE=eicu} or \code{synthetic}); Streamlit and CLI entry points support stay selection by \code{patientunitstayid}.
+    \item Hour-level temporal scrubbing via \code{data/temporal\_timeline.py} (\code{build\_timeline}, \code{snapshot\_at\_hour}, \code{patient\_view\_at\_hour}), interactive Plotly charts (\code{ui/chart\_helpers.py}), the Critical Patient Brief (\code{clinical/critical\_brief.py}), and clinician feedback overlay (\code{clinical/feedback\_overlay.py}).
+    \item Airflow DAGs mount the local demo dataset and persist JSON/report/timeline artifacts under \code{icu\_agents/output/}.
+    \item LLM integration supports narrative enrichment and conversational doctor dialogue when \code{OPENAI\_API\_KEY} is set.
+\end{itemize}
+The system is a research prototype and not validated for live clinical deployment.
 
 \section{Organization of the Report}
 
@@ -137,12 +182,14 @@ Monolithic generators are difficult to extend when new modalities (e.g., radiolo
 
 \section{Proposed Solution}
 
-The proposed \texttt{icu\_agents} system addresses these gaps through:
+The proposed \code{icu\_agents} system addresses these gaps through:
 \begin{enumerate}[noitemsep]
-    \item \textbf{Specialized agents} (\texttt{VitalsAgent}, \texttt{LabAgent}, \texttt{RadiologyAgent}, \texttt{RespiratoryAgent}, \texttt{RiskAgent}, \texttt{NarrativeAgent}) with diagnosis-aware parameters.
-    \item \textbf{A unified \texttt{PatientState}} model aggregating all modalities.
-    \item \textbf{\texttt{PatientPipeline}} for in-process orchestration and \textbf{Airflow DAGs} for production-style task graphs.
-    \item \textbf{Temporal reasoning} with hourly severity labels and branch tasks for respiratory and sepsis escalation paths.
+    \item \textbf{Specialized agents} (\code{VitalsAgent}, \code{LabAgent}, \code{RadiologyAgent}, \code{RespiratoryAgent}, \code{RiskAgent}, \code{NarrativeAgent}) with diagnosis-aware parameters.
+    \item \textbf{A unified \code{PatientState}} model aggregating all modalities.
+    \item \textbf{\code{PatientPipeline}} for in-process orchestration and \textbf{Airflow DAGs} for production-style task graphs.
+    \item \textbf{Temporal reasoning} with hourly severity labels, point-in-time snapshots, and branch tasks for respiratory and sepsis escalation paths.
+    \item \textbf{Critical Patient Brief} with SBAR formatting, six-hour trend deltas, explainable alerts, and rule-based action recommendations.
+    \item \textbf{Human-in-the-loop feedback} via doctor dialogue and a clinician-adjusted brief overlay.
     \item \textbf{Persistent artifacts} (JSON bundles, text reports, timeline traces, dashboard snapshot).
 \end{enumerate}
 
@@ -157,7 +204,7 @@ This chapter covers the system requirements, including hardware and software spe
 \begin{itemize}[noitemsep]
     \item 64-bit processor (Intel/AMD x64 or Apple Silicon with emulation).
     \item Minimum 8~GB RAM (16~GB recommended for Docker-based Airflow with PostgreSQL).
-    \item 10~GB free disk space for Python environment, Docker images, and generated \texttt{output/} artifacts.
+    \item 10~GB free disk space for Python environment, Docker images, and generated \code{output/} artifacts.
     \item Network access for initial dependency installation (pip, Docker image pulls).
 \end{itemize}
 
@@ -165,8 +212,8 @@ This chapter covers the system requirements, including hardware and software spe
 
 \begin{itemize}[noitemsep]
     \item \textbf{Operating system:} Windows 10/11 (app and Streamlit), WSL2 Ubuntu, or Linux/macOS for full Airflow support.
-    \item \textbf{Python:} 3.10+ with \texttt{venv}.
-    \item \textbf{Core libraries:} Pydantic, Pandas, NumPy, Faker, Streamlit, Matplotlib, scikit-learn, NetworkX (see \texttt{requirements.txt}).
+    \item \textbf{Python:} 3.10+ with \code{venv}.
+    \item \textbf{Core libraries:} Pydantic, Pandas, NumPy, Faker, Streamlit, Matplotlib, Plotly, scikit-learn, NetworkX, LangChain (see \code{requirements.txt}).
     \item \textbf{Orchestration (optional):} Apache Airflow 2.x via Docker Compose (PostgreSQL 15 backend) or WSL2-native install.
     \item \textbf{Container runtime:} Docker Desktop (recommended for Airflow on Windows).
     \item \textbf{Version control:} Git.
@@ -182,18 +229,23 @@ This chapter covers the system requirements, including hardware and software spe
     \item \textbf{FR5:} Set respiratory support fields (mechanical ventilation flag, FiO$_2$, PEEP).
     \item \textbf{FR6:} Compute mortality, sepsis, and ICU deterioration risk scores from latest vitals and labs.
     \item \textbf{FR7:} Render a human-readable ICU narrative summary.
-    \item \textbf{FR8:} Persist patient bundles and reports via Airflow tasks to \texttt{output/json} and \texttt{output/reports}.
-    \item \textbf{FR9:} Update \texttt{latest\_dashboard.json} with key metrics after batch runs.
+    \item \textbf{FR8:} Persist patient bundles and reports via Airflow tasks to \code{output/json} and \code{output/reports}.
+    \item \textbf{FR9:} Update \code{latest\_dashboard.json} with key metrics after batch runs.
     \item \textbf{FR10:} Execute temporal pipeline with hourly severity trace, hypoxia/sepsis branching, and coordinator recommendations.
     \item \textbf{FR11:} Provide Streamlit UI to trigger generation and display narrative, vitals, labs, and risk JSON.
+    \item \textbf{FR12:} Support \textbf{point-in-time ICU review} via an hour slider and \code{snapshot\_at\_hour()} so all UI tabs reflect data known only up to the selected hour.
+    \item \textbf{FR13:} Render \textbf{interactive Plotly charts} (vitals, labs-over-time, clinical events) with click-to-scrub timeline navigation.
+    \item \textbf{FR14:} Generate a \textbf{Critical Patient Brief} (SBAR, six-hour trend deltas, explainable alerts with evidence, recommended actions, data-gap warnings).
+    \item \textbf{FR15:} Enable \textbf{doctor dialogue} (\code{ClinicalChatAgent}) with optional OpenAI-backed responses and rule-based fallback.
+    \item \textbf{FR16:} Apply \textbf{clinician feedback overlay} to adjust trajectory, alerts, and actions while preserving underlying measurements; display before/after impact.
 \end{enumerate}
 
 \section{Non-Functional Requirements}
 
 \begin{itemize}[noitemsep]
-    \item \textbf{Modularity:} Each agent resides in a separate module under \texttt{agents/}.
-    \item \textbf{Reproducibility:} Configurable random seed (\texttt{SEED = 42} in \texttt{config.py}) for future deterministic runs.
-    \item \textbf{Extensibility:} New diagnoses can be added to \texttt{clinical\_rules.DIAGNOSES} and agent conditional logic.
+    \item \textbf{Modularity:} Each agent resides in a separate module under \code{agents/}.
+    \item \textbf{Reproducibility:} Configurable random seed (\code{SEED = 42} in \code{config.py}) for future deterministic runs.
+    \item \textbf{Extensibility:} New diagnoses can be added to \code{clinical\_rules.DIAGNOSES} and agent conditional logic.
     \item \textbf{Portability:} Docker Compose standardizes Airflow deployment across machines.
     \item \textbf{Usability:} Streamlit offers one-click patient generation for demonstrations.
     \item \textbf{Maintainability:} Pydantic models validate patient structure; Airflow task boundaries mirror agent boundaries.
@@ -206,29 +258,35 @@ This chapter covers the system requirements, including hardware and software spe
 %\caption{Use Case Diagram}
 %\end{figure}
 
-Primary actors and use cases include: \textbf{Researcher/Operator} $\rightarrow$ run \texttt{app.py}, trigger Streamlit generation, or start Airflow DAGs; \textbf{Scheduler} $\rightarrow$ daily execution of \texttt{icu\_multi\_agent\_pipeline} and \texttt{icu\_temporal\_reasoning\_pipeline}; \textbf{System} $\rightarrow$ write JSON/report/timeline artifacts and update dashboard metadata.
+Primary actors and use cases include: \textbf{Clinician/Researcher} $\rightarrow$ run pipeline, scrub ICU hour, review Critical Patient Brief, provide doctor dialogue feedback; \textbf{Operator} $\rightarrow$ run \code{app.py}, trigger Streamlit, or start Airflow DAGs; \textbf{Scheduler} $\rightarrow$ daily execution of temporal and multi-agent DAGs; \textbf{System} $\rightarrow$ write JSON/report/timeline artifacts, apply feedback overlay, and update dashboard metadata.
 
 \newpage
 
 \chapter{Proposed Methodology}
 
-This chapter explains the overall methodology, system architecture, data flow, and algorithms used in the \texttt{icu\_agents} implementation.
+This chapter explains the overall methodology, system architecture, data flow, and algorithms used in the \code{icu\_agents} implementation.
 
 \section{System Architecture}
 
-The architecture has four layers:
+The architecture has five layers:
 \begin{enumerate}[noitemsep]
-    \item \textbf{Data:} PhysioNet eICU-CRD demo SQLite (\texttt{eicu\_v2\_0\_1.sqlite3}) and CSV.gz tables under \texttt{data/eicu-crd-demo/}, loaded by \texttt{data/eicu\_loader.py}.
-    \item \textbf{Presentation:} \texttt{app.py} (CLI) and \texttt{ui/streamlit\_app.py} (web UI with stay selector).
-    \item \textbf{Orchestration:} \texttt{orchestrator/patient\_pipeline.py} and \texttt{data/pipeline\_source.py}; Apache Airflow DAGs for batch and temporal reasoning.
+    \item \textbf{Data:} PhysioNet eICU-CRD demo SQLite (\code{eicu\_v2\_0\_1.sqlite3}) and CSV.gz tables under \code{data/eicu-crd-demo/}, loaded by \code{data/eicu\_loader.py}.
+    \item \textbf{Presentation:} \code{app.py} (CLI) and \code{ui/streamlit\_app.py} (web UI with stay selector, ICU hour scrubber, Critical Patient Brief, doctor dialogue).
+    \item \textbf{Clinical decision support:}
+    \begin{itemize}[noitemsep]
+        \item \code{clinical/critical\_brief.py} --- SBAR, trends, alerts, actions
+        \item \code{clinical/feedback\_overlay.py} --- clinician-adjusted brief
+        \item \code{data/temporal\_timeline.py} --- point-in-time snapshots
+    \end{itemize}
+    \item \textbf{Orchestration:} \code{orchestrator/patient\_pipeline.py} and \code{data/pipeline\_source.py}; Apache Airflow DAGs for batch and temporal reasoning.
     \item \textbf{Agent layer:} Risk and narrative agents on real measurements; synthetic generators used only when eICU fields are missing.
 \end{enumerate}
 
-\textbf{eICU data path.} For \texttt{ICU\_DATA\_SOURCE=eicu}, the loader queries \texttt{patient}, \texttt{vitalperiodic}, \texttt{lab}, \texttt{admissiondx}, \texttt{diagnosis}, \texttt{note}, and \texttt{respiratorycharting} for a selected \texttt{patientunitstayid}. Vitals are mapped to hourly traces (heart rate, SpO$_2$, respiratory rate, temperature, systolic BP); labs are normalized to WBC, lactate, creatinine, platelets, and hemoglobin. \texttt{RiskAgent} and \texttt{NarrativeAgent} consume this \texttt{PatientState}; sparse radiology rows fall back to \texttt{RadiologyAgent} templates.
+\textbf{eICU data path.} For \code{ICU\_DATA\_SOURCE=eicu}, the loader queries core eICU tables including \code{patient}, \code{vitalperiodic}, \code{lab}, \code{admissiondx}, \code{diagnosis}, \code{note}, and \code{respiratorycharting} for a selected \code{patientunitstayid}. Vitals are mapped to hourly traces (heart rate, SpO$_2$, respiratory rate, temperature, systolic BP); labs are normalized to WBC, lactate, creatinine, platelets, and hemoglobin. \code{RiskAgent} and \code{NarrativeAgent} consume this \code{PatientState}; sparse radiology rows fall back to \code{RadiologyAgent} templates.
 
-\textbf{Synthetic fallback path.} When \texttt{ICU\_DATA\_SOURCE=synthetic}, \texttt{generate\_base\_patient()} seeds demographics and all modality agents run as before.
+\textbf{Synthetic fallback path.} When \code{ICU\_DATA\_SOURCE=synthetic}, \code{generate\_base\_patient()} seeds demographics and all modality agents run as before.
 
-Airflow DAGs call \texttt{build\_patient\_dict()} so the same eICU mapping is used in Docker (volume-mounted demo data) and on the host.
+Airflow DAGs call \code{build\_patient\_dict()} so the same eICU mapping is used in Docker (volume-mounted demo data) and on the host.
 
 \begin{figure}[h]
 \centering
@@ -238,7 +296,7 @@ Airflow DAGs call \texttt{build\_patient\_dict()} so the same eICU mapping is us
 
 \section{Algorithm or Model Description}
 
-\textbf{Base patient generation.} \texttt{generate\_base\_patient()} randomly selects age (24--88), gender (Male/Female), and diagnosis from six conditions.
+\textbf{Base patient generation.} \code{generate\_base\_patient()} randomly selects age (24--88), gender (Male/Female), and diagnosis from six conditions.
 
 \textbf{VitalsAgent.} For each hour in a 24-hour window, samples vitals from Gaussian distributions centered on diagnosis-specific baselines (e.g., Sepsis: higher heart rate and temperature, lower SpO$_2$; ARDS: SpO$_2$ baseline 85\%).
 
@@ -250,22 +308,50 @@ Airflow DAGs call \texttt{build\_patient\_dict()} so the same eICU mapping is us
 
 \textbf{RiskAgent.} Rule-based scoring: adds weighted points if SpO$_2$ $<$ 90, heart rate $>$ 120, lactate $>$ 4, or creatinine $>$ 2; caps mortality risk at 100 and derives correlated sepsis and deterioration scores.
 
-\textbf{Temporal reasoning (Airflow, eICU-backed).} \texttt{build\_hourly\_reasoning\_trace} walks the eICU-derived vitals list and labels each hour as \textit{stable}, \textit{worsening}, or \textit{critical} when SpO$_2$ or heart rate cross clinical thresholds (e.g., SpO$_2$ $<$ 90 and HR $>$ 115 $\Rightarrow$ worsening; SpO$_2$ $<$ 85 or HR $>$ 125 $\Rightarrow$ critical). Each trace row stores an explicit \texttt{reason} string for auditability. \texttt{branch\_hypoxia} and \texttt{branch\_septic\_shock} route to escalation tasks when terminal SpO$_2$ $<$ 85 or lactate $>$ 4~mmol/L from the eICU lab panel. \texttt{coordinator\_agent} merges branch outcomes, proposes FiO$_2$/PEEP adjustments, and emits sepsis action lists; \texttt{generate\_temporal\_narrative} summarizes critical hours and escalation flags for the final report.
+\textbf{Temporal timeline and point-in-time snapshots.} \code{build\_timeline()} merges hourly vitals, lab draws, clinical notes, and respiratory events from eICU SQLite. \code{snapshot\_at\_hour()} reconstructs cumulative labs, ventilation settings, risk scores, and events known only up to the selected ICU hour---preventing future-data leakage in narratives and charts. \code{NarrativeAgent.generate(hour=..., recent\_events=...)} produces hour-specific clinical reports.
+
+\textbf{Critical Patient Brief.} \code{build\_critical\_brief()} computes six-hour trend deltas (SpO$_2$, heart rate, lactate, creatinine, FiO$_2$), classifies overall trajectory (deteriorating/improving/stable), emits explainable alerts (hypoxemia, tachycardia, hyperlactatemia, AKI) with hour-stamped evidence, and recommends rule-based actions aligned with Airflow escalation logic (respiratory and sepsis pathways).
+
+\textbf{Clinician feedback overlay.} \code{apply\_doctor\_feedback()} parses doctor dialogue (agreement, disagreement, improving/worsening cues, plan keywords) and adjusts the brief---trajectory label, alert set, SBAR assessment/recommendation, and action list---while leaving vitals and labs unchanged. The UI displays a before/after impact panel and an automated baseline expander for comparison.
+
+\textbf{Interactive dashboard.} Plotly charts (\code{ui/chart\_helpers.py}) support hover tooltips, selected-hour markers, and click-to-scrub navigation synchronized across tabs via a shared \code{pit\_hour\_slider} session state.
+
+\textbf{Temporal reasoning (Airflow, eICU-backed).} \code{build\_hourly\_reasoning\_trace} walks the eICU-derived vitals list and labels each hour as \textit{stable}, \textit{worsening}, or \textit{critical} when SpO$_2$ or heart rate cross clinical thresholds (e.g., SpO$_2$ $<$ 90 and HR $>$ 115 $\Rightarrow$ worsening; SpO$_2$ $<$ 85 or HR $>$ 125 $\Rightarrow$ critical). Each trace row stores an explicit \code{reason} string for auditability.
+
+Branch tasks \code{branch\_hypoxia} and \code{branch\_septic\_shock} route to escalation when terminal SpO$_2$ $<$ 85 or lactate $>$ 4~mmol/L from the eICU lab panel. \code{coordinator\_agent} merges branch outcomes, proposes FiO$_2$/PEEP adjustments, and emits sepsis action lists; \code{generate\_temporal\_narrative} summarizes critical hours and escalation flags for the final report.
 
 \section{Workflow Diagram}
 
-\textbf{Local pipeline (\texttt{PatientPipeline.run}):}
+\textbf{Local pipeline (\code{PatientPipeline.run}):}
 \begin{enumerate}[noitemsep]
-    \item Generate base patient $\rightarrow$ create \texttt{PatientState} with UUID.
+    \item Generate base patient $\rightarrow$ create \code{PatientState} with UUID.
     \item VitalsAgent $\rightarrow$ LabAgent $\rightarrow$ RadiologyAgent $\rightarrow$ RespiratoryAgent.
     \item RiskAgent $\rightarrow$ NarrativeAgent $\rightarrow$ return patient.
 \end{enumerate}
 
-\textbf{Airflow \texttt{icu\_multi\_agent\_pipeline} (eICU-integrated):}
-\texttt{load\_patient\_from\_source} (eICU SQLite $\rightarrow$ risk $\rightarrow$ narrative) $\rightarrow$ \texttt{store\_patient\_bundle} $\rightarrow$ \texttt{update\_dashboard}.
+\textbf{Airflow \code{icu\_multi\_agent\_pipeline} (eICU-integrated):}
+\begin{enumerate}[noitemsep]
+    \item \code{load\_patient\_from\_source} (eICU SQLite $\rightarrow$ risk $\rightarrow$ narrative)
+    \item \code{store\_patient\_bundle} $\rightarrow$ \code{update\_dashboard}
+\end{enumerate}
 
-\textbf{Airflow \texttt{icu\_temporal\_reasoning\_pipeline}:}
-\texttt{load\_temporal\_bundle} (eICU vitals/labs) $\rightarrow$ \texttt{build\_hourly\_reasoning\_trace} $\rightarrow$ parallel branch tasks (hypoxia, sepsis) $\rightarrow$ \texttt{coordinator\_agent} $\rightarrow$ \texttt{optional\_langgraph\_handoff} $\rightarrow$ \texttt{generate\_temporal\_narrative} $\rightarrow$ \texttt{store\_temporal\_outputs}.
+\textbf{Streamlit point-in-time dashboard:}
+\begin{enumerate}[noitemsep]
+    \item Load eICU stay $\rightarrow$ \code{build\_timeline()}.
+    \item Clinician selects ICU hour (slider or chart click) $\rightarrow$ \code{snapshot\_at\_hour()}.
+    \item \code{build\_critical\_brief()} $\rightarrow$ SBAR, trends, alerts, actions.
+    \item Optional doctor dialogue $\rightarrow$ \code{ClinicalChatAgent} $\rightarrow$ \code{apply\_doctor\_feedback()} $\rightarrow$ clinician-adjusted brief and impact panel.
+    \item All tabs refresh: Overview, Vitals, Labs \& Risk, Clinical Narrative, Doctor Dialogue.
+\end{enumerate}
+
+\textbf{Airflow \code{icu\_temporal\_reasoning\_pipeline}:}
+\begin{enumerate}[noitemsep]
+    \item \code{load\_temporal\_bundle} (eICU vitals/labs)
+    \item \code{build\_hourly\_reasoning\_trace}
+    \item Parallel branch tasks (hypoxia, sepsis)
+    \item \code{coordinator\_agent} $\rightarrow$ \code{optional\_langgraph\_handoff}
+    \item \code{generate\_temporal\_narrative} $\rightarrow$ \code{store\_temporal\_outputs}
+\end{enumerate}
 
 \newpage
 
@@ -275,30 +361,34 @@ This chapter provides details of the development process, programming languages 
 
 \section{Development Environment}
 
-Development was carried out in Python using a virtual environment (\texttt{python -m venv .venv}). The package root is \texttt{icu\_agents/}. Local execution:
+Development was carried out in Python using a virtual environment (\code{python -m venv .venv}). The package root is \code{icu\_agents/}. Local execution:
 \begin{verbatim}
 cd icu_agents
 pip install -r requirements.txt
 python app.py
 streamlit run ui/streamlit_app.py
 \end{verbatim}
-Airflow is deployed via \texttt{docker-compose.yml} (PostgreSQL, webserver on port 8080, scheduler) with DAGs mounted from \texttt{airflow/dags/} and the eICU demo volume \texttt{../data/eicu-crd-demo}. Project configuration in \texttt{config.py} defines \texttt{DATA\_SOURCE} (default \texttt{eicu}), \texttt{EICU\_DEMO\_DIR}, \texttt{OPENAI\_MODEL}, \texttt{MAX\_ICU\_HOURS = 72}, and \texttt{SEED = 42}. Download the dataset with \texttt{scripts/download\_eicu\_crd\_demo.sh} before first run.
+Airflow is deployed via \code{docker-compose.yml} (PostgreSQL, webserver on port 8080, scheduler) with DAGs mounted from \code{airflow/dags/} and the eICU demo volume \code{../data/eicu-crd-demo}.
+
+Project configuration in \code{config.py} defines \code{DATA\_SOURCE} (default \code{eicu}), \code{EICU\_DEMO\_DIR}, \code{OPENAI\_MODEL}, \code{MAX\_ICU\_HOURS = 72}, and \code{SEED = 42}. Download the dataset with \code{scripts/download\_eicu\_crd\_demo.sh} before first run.
 
 \section{Dataset Description}
 
-\textbf{eICU Collaborative Research Database (demo v2.0.1).} The primary data source is the open PhysioNet demo (\url{https://physionet.org/content/eicu-crd-demo/2.0.1/}), comprising 2,500+ de-identified ICU stays from 20 hospitals. Files are stored locally under \texttt{data/eicu-crd-demo/} (git-ignored) and include gzipped CSV tables plus \texttt{sqlite/eicu\_v2\_0\_1.sqlite3}. The loader maps \texttt{vitalperiodic} rows to hourly traces, latest \texttt{lab} values to the agent lab schema, \texttt{note} text to radiology reports when available, and \texttt{respiratorycharting} FiO$_2$/PEEP to ventilation fields.
+\textbf{eICU Collaborative Research Database (demo v2.0.1).} The primary data source is the open PhysioNet demo (\url{https://physionet.org/content/eicu-crd-demo/2.0.1/}), comprising 2,500+ de-identified ICU stays from 20 hospitals. Files are stored locally under \code{data/eicu-crd-demo/} (git-ignored) and include gzipped CSV tables plus \code{sqlite/eicu\_v2\_0\_1.sqlite3}.
+
+The loader maps \code{vitalperiodic} rows to hourly traces, latest \code{lab} values to the agent lab schema, \code{note} text to radiology reports when available, and \code{respiratorycharting} FiO$_2$/PEEP to ventilation fields.
 
 \textbf{Agent bundles (eICU + synthetic fallback).} Each bundle includes:
 \begin{itemize}[noitemsep]
-    \item Demographics: \texttt{patient\_id}, \texttt{age}, \texttt{gender}, \texttt{diagnosis}.
-    \item \texttt{vitals}: list of 24 hourly dictionaries (timestamp, heart\_rate, temperature, spo2, resp\_rate, systolic\_bp).
-    \item \texttt{labs}: WBC, Lactate, Creatinine, Platelets, Hemoglobin.
-    \item \texttt{radiology}: report text; \texttt{respiratory}: ventilation parameters.
-    \item \texttt{risk\_scores}: mortality\_risk, sepsis\_risk, icu\_deterioration\_risk.
-    \item \texttt{narrative}: formatted clinical summary string.
-    \item \texttt{data\_source}: \texttt{eicu} or \texttt{synthetic}; \texttt{eicu\_stay\_id} when loaded from the demo database.
+    \item Demographics: \code{patient\_id}, \code{age}, \code{gender}, \code{diagnosis}.
+    \item \code{vitals}: list of 24 hourly dictionaries (timestamp, heart\_rate, temperature, spo2, resp\_rate, systolic\_bp).
+    \item \code{labs}: WBC, Lactate, Creatinine, Platelets, Hemoglobin.
+    \item \code{radiology}: report text; \code{respiratory}: ventilation parameters.
+    \item \code{risk\_scores}: mortality\_risk, sepsis\_risk, icu\_deterioration\_risk.
+    \item \code{narrative}: formatted clinical summary string.
+    \item \code{data\_source}: \code{eicu} or \code{synthetic}; \code{eicu\_stay\_id} when loaded from the demo database.
 \end{itemize}
-Temporal runs add \texttt{reasoning\_trace} (per-hour severity and reason), \texttt{respiratory\_escalation}, \texttt{sepsis\_escalation}, \texttt{coordinator\_summary}, and \texttt{temporal\_narrative}. Artifacts are written to \texttt{output/json}, \texttt{output/reports}, and \texttt{output/timelines}.
+Temporal runs add \code{reasoning\_trace} (per-hour severity and reason), \code{respiratory\_escalation}, \code{sepsis\_escalation}, \code{coordinator\_summary}, and \code{temporal\_narrative}. Artifacts are written to \code{output/json}, \code{output/reports}, and \code{output/timelines}.
 
 \section{Model Implementation}
 
@@ -306,26 +396,32 @@ Key modules and responsibilities:
 
 \begin{table}[h]
 \centering
-\begin{tabular}{@{}ll@{}}
+\small
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{0.46\textwidth} X@{}}
 \toprule
 \textbf{Module} & \textbf{Role} \\
 \midrule
-\texttt{models/patient\_state.py} & Pydantic \texttt{PatientState} schema \\
-\texttt{data/eicu\_loader.py} & eICU SQLite queries and schema mapping \\
-\texttt{data/pipeline\_source.py} & Unified eICU/synthetic bundle builder \\
-\texttt{synthetic/clinical\_rules.py} & Diagnosis list and base patient sampling \\
-\texttt{agents/vitals\_agent.py} & Hourly vitals time series \\
-\texttt{agents/lab\_agent.py} & Laboratory panel generation \\
-\texttt{agents/radiology\_agent.py} & Imaging report lookup \\
-\texttt{agents/respiratory\_agent.py} & Ventilation settings \\
-\texttt{agents/risk\_agent.py} & Rule-based risk scoring \\
-\texttt{agents/narrative\_agent.py} & Textual ICU summary \\
-\texttt{orchestrator/patient\_pipeline.py} & Agent sequencing \\
-\texttt{airflow/dags/icu\_multi\_agent\_pipeline.py} & Batch multi-agent DAG \\
-\texttt{airflow/dags/icu\_temporal\_reasoning\_pipeline.py} & Temporal branching DAG \\
-\texttt{ui/streamlit\_app.py} & Interactive UI \\
+\code{models/patient\_state.py} & Pydantic \code{PatientState} schema \\
+\code{data/eicu\_loader.py} & eICU SQLite queries and schema mapping \\
+\code{data/pipeline\_source.py} & Unified eICU/synthetic bundle builder \\
+\code{synthetic/clinical\_rules.py} & Diagnosis list and base patient sampling \\
+\code{agents/vitals\_agent.py} & Hourly vitals time series \\
+\code{agents/lab\_agent.py} & Laboratory panel generation \\
+\code{agents/radiology\_agent.py} & Imaging report lookup \\
+\code{agents/respiratory\_agent.py} & Ventilation settings \\
+\code{agents/risk\_agent.py} & Rule-based risk scoring \\
+\code{data/temporal\_timeline.py} & Point-in-time timeline, snapshots, hour views \\
+\code{clinical/critical\_brief.py} & SBAR brief, trends, alerts, actions \\
+\code{clinical/feedback\_overlay.py} & Clinician feedback impact on brief \\
+\code{agents/clinical\_chat\_agent.py} & Doctor dialogue (LLM + rule fallback) \\
+\code{ui/chart\_helpers.py} & Interactive Plotly charts for scrubbing \\
+\code{agents/narrative\_agent.py} & Point-in-time and full-stay narratives \\
+\code{orchestrator/patient\_pipeline.py} & Agent sequencing \\
+\code{airflow/dags/icu\_multi\_agent\_pipeline.py} & Batch multi-agent DAG \\
+\code{airflow/dags/icu\_temporal\_reasoning\_pipeline.py} & Temporal branching DAG \\
+\code{ui/streamlit\_app.py} & Point-in-time dashboard, brief, dialogue \\
 \bottomrule
-\end{tabular}
+\end{tabularx}
 \caption{Implementation module map}
 \end{table}
 
@@ -333,38 +429,105 @@ Key modules and responsibilities:
 
 Evaluation focuses on pipeline correctness, eICU mapping fidelity, and clinical plausibility of rule-based reasoning:
 \begin{itemize}[noitemsep]
-    \item \textbf{Structural validity:} JSON bundles conform to expected keys; Pydantic validation on \texttt{PatientState}.
-    \item \textbf{eICU mapping:} \texttt{patientunitstayid} resolves in SQLite; vitals and labs populate non-empty fields for cohort stays with measurements.
+    \item \textbf{Structural validity:} JSON bundles conform to expected keys; Pydantic validation on \code{PatientState}.
+    \item \textbf{eICU mapping:} \code{patientunitstayid} resolves in SQLite; vitals and labs populate non-empty fields for cohort stays with measurements.
     \item \textbf{Risk monotonicity:} On held-out synthetic cases, higher lactate and lower SpO$_2$ increase mortality risk; on eICU stays, scores reflect measured lactate and latest SpO$_2$.
-    \item \textbf{Temporal severity:} Critical hours in \texttt{reasoning\_trace} align with SpO$_2$/HR threshold breaches on eICU-derived traces.
+    \item \textbf{Temporal severity:} Critical hours in \code{reasoning\_trace} align with SpO$_2$/HR threshold breaches on eICU-derived traces.
     \item \textbf{Branching correctness:} Hypoxia branch fires when terminal SpO$_2$ $<$ 85; sepsis branch when lactate $>$ 4~mmol/L.
-    \item \textbf{Operational metrics:} DAG success rate, artifact creation under \texttt{output/}, dashboard metadata (\texttt{data\_source}, \texttt{eicu\_stay\_id}).
+    \item \textbf{Point-in-time integrity:} Labs, vitals, and events at hour $h$ exclude measurements with timestamp $> h$.
+    \item \textbf{Brief consistency:} Alerts fire when thresholds breached; evidence hours match timeline events.
+    \item \textbf{Feedback overlay:} Clinician ``disagree + improving'' downgrades trajectory and suppresses matched alerts; impact panel reflects before/after counts.
+    \item \textbf{UI synchronization:} Chart click-to-scrub updates shared hour slider and all tab content on rerun.
+    \item \textbf{Operational metrics:} DAG success rate, artifact creation under \code{output/}, dashboard metadata (\code{data\_source}, \code{eicu\_stay\_id}).
 \end{itemize}
-Future work may add distributional comparison to published ICU statistics and LLM-judged narrative quality.
+Future work may add SOFA/APACHE calibration, distributional comparison to published ICU statistics, persisted feedback audit logs, and LLM-judged narrative quality.
 
 \newpage
 
 \chapter{Results and Discussion}
 
-The pipeline was exercised through CLI runs, Streamlit sessions, and repeated Airflow DAG triggers. Each successful run produces a unique \texttt{patient\_id} and persisted artifacts.
+The pipeline was exercised through CLI runs, Streamlit sessions, and repeated Airflow DAG triggers. Each successful run produces a unique \code{patient\_id} and persisted artifacts.
 
 \section{Result Analysis}
 
-\textbf{Single-patient generation (eICU).} Running \texttt{python app.py --source eicu --stay-id <id>} loads a real demo stay, maps vitals/labs from SQLite, and prints the narrative. Example stay \texttt{147784} yields measured WBC, lactate, creatinine, FiO$_2$ from charting, and a 24-point vitals trace for reasoning.
+\textbf{Single-patient generation (eICU).} Running \code{python app.py --source eicu --stay-id <id>} loads a real demo stay, maps vitals/labs from SQLite, and prints the narrative. Example stay \code{147784} yields measured WBC, lactate, creatinine, FiO$_2$ from charting, and a 24-point vitals trace for reasoning.
 
-\textbf{Multi-agent Airflow DAG.} With \texttt{ICU\_DATA\_SOURCE=eicu} and the demo volume mounted in Docker, \texttt{icu\_multi\_agent\_pipeline} writes bundles tagged \texttt{data\_source: eicu} and refreshes \texttt{latest\_dashboard.json} with \texttt{eicu\_stay\_id}, mortality risk, and latest SpO$_2$.
+\textbf{Multi-agent Airflow DAG.} With \code{ICU\_DATA\_SOURCE=eicu} and the demo volume mounted in Docker, \code{icu\_multi\_agent\_pipeline} writes bundles tagged \code{data\_source: eicu} and refreshes \code{latest\_dashboard.json} with \code{eicu\_stay\_id}, mortality risk, and latest SpO$_2$.
 
-\textbf{Temporal reasoning DAG.} The \texttt{icu\_temporal\_reasoning\_pipeline} builds \texttt{reasoning\_trace} from eICU \texttt{vitalperiodic} rows, applies hypoxia/sepsis branches on measured SpO$_2$ and lactate, and stores coordinator escalation metadata plus \texttt{temporal\_narrative} under \texttt{output/timelines/}.
+\textbf{Temporal reasoning DAG.} The \code{icu\_temporal\_reasoning\_pipeline} builds \code{reasoning\_trace} from eICU \code{vitalperiodic} rows, applies hypoxia/sepsis branches on measured SpO$_2$ and lactate, and stores coordinator escalation metadata plus \code{temporal\_narrative} under \code{output/timelines/}.
 
-\textbf{Streamlit UI.} Operators select \texttt{patientunitstayid} from the demo cohort or switch to synthetic mode for regression testing.
+\textbf{Streamlit point-in-time dashboard.} Operators select \code{patientunitstayid}, run the pipeline, and scrub ICU hours via slider or interactive Plotly charts. All tabs reflect the selected hour.
 
-\textbf{Discussion.} Grounding agents in eICU-CRD demo data improves external validity over pure simulation while retaining interpretable rule-based reasoning traces. Limitations include sparse temperature/SpO$_2$ in some stays, simplified risk scoring (not calibrated to APACHE/SOFA), and placeholder LangGraph integration. The hybrid design (eICU first, synthetic fallback) supports reproducible Airflow runs and future LLM enrichment on real clinical text from \texttt{note} tables.
+The \textbf{Critical Patient Brief} shows SBAR text, six-hour trend deltas with directional arrows, explainable alerts (e.g., tachycardia with hour-stamped evidence), and prioritized actions. The \textbf{Doctor Dialogue} tab accepts clinician feedback; the \textbf{feedback overlay} revises trajectory (e.g., STABLE $\rightarrow$ IMPROVING when the clinician disagrees with deterioration), adjusts alerts, and adds clinician-directed actions, with a before/after impact summary.
 
-%\begin{figure}[h]
-%\centering
-%\includegraphics[width=0.8\textwidth]{results_graph.png}
-%\caption{Model Performance Graph}
-%\end{figure}
+\section{Streamlit Dashboard Screenshots}
+
+Figures~\ref{fig:pipeline-setup}--\ref{fig:feedback-overlay} document the Streamlit clinical dashboard at \url{http://localhost:8501}, captured with Playwright for eICU stay \code{141764} at ICU hour~5. Detailed captions are maintained in \code{screenshots/ui\_feature\_captures.md}.
+
+\begin{figure}[p]
+\centering
+\includegraphics[width=0.92\textwidth]{screenshots/01_pipeline_setup.png}
+\caption{Sidebar pipeline setup: data source selection (\code{eicu}/\code{synthetic}), \code{patientunitstayid} picker, and \textbf{Run ICU Pipeline} trigger that loads vitals, labs, notes, and respiratory data from the eICU-CRD demo SQLite database.}
+\label{fig:pipeline-setup}
+\end{figure}
+
+\begin{figure}[p]
+\centering
+\includegraphics[width=0.92\textwidth]{screenshots/02_critical_patient_brief.png}
+\caption{Critical Patient Brief: automated SBAR summary with six-hour trend deltas (SpO$_2$, heart rate, lactate, creatinine, FiO$_2$), active alert count, assessment/recommendation text, prioritized actions, and data-gap warnings for the selected ICU hour.}
+\label{fig:critical-brief}
+\end{figure}
+
+\begin{figure}[p]
+\centering
+\includegraphics[width=0.92\textwidth]{screenshots/03_icu_hour_scrubber.png}
+\caption{Point-in-time temporal navigation: jump buttons (admission, mid-stay, latest), ICU hour slider, and chart click-to-scrub controls. All dashboard content reflects data known only up to the selected hour.}
+\label{fig:hour-scrubber}
+\end{figure}
+
+\begin{figure}[p]
+\centering
+\includegraphics[width=0.92\textwidth]{screenshots/04_tab_overview.png}
+\caption{Overview tab: consolidated bedside snapshot with multi-series vitals charts, temperature trend, vitals table, laboratory bar chart, and clinical events timeline at the scrubbed hour.}
+\label{fig:tab-overview}
+\end{figure}
+
+\begin{figure}[p]
+\centering
+\includegraphics[width=0.92\textwidth]{screenshots/05_tab_vitals.png}
+\caption{Vitals (time series) tab: detailed Plotly chart of heart rate, SpO$_2$, respiratory rate, temperature, and systolic BP through the selected hour, with current-hour marker and expandable JSON history.}
+\label{fig:tab-vitals}
+\end{figure}
+
+\begin{figure}[p]
+\centering
+\includegraphics[width=0.92\textwidth]{screenshots/06_tab_labs_risk.png}
+\caption{Labs \& risk tab: lab draw events over time, latest laboratory panel, heuristic mortality/sepsis/deterioration risk scores, respiratory support metadata, and radiology/notes JSON.}
+\label{fig:tab-labs-risk}
+\end{figure}
+
+\begin{figure}[p]
+\centering
+\includegraphics[width=0.92\textwidth]{screenshots/07_tab_clinical_narrative.png}
+\caption{Clinical narrative tab: \code{NarrativeAgent} point-in-time report incorporating demographics, severity, vitals/labs, and recent events, with an events timeline chart below the text.}
+\label{fig:tab-clinical}
+\end{figure}
+
+\begin{figure}[p]
+\centering
+\includegraphics[width=0.92\textwidth]{screenshots/08_tab_doctor_dialogue.png}
+\caption{Doctor dialogue tab: \code{ClinicalChatAgent} conversational interface with quick prompts (severity rationale, next steps, clinical disagreement), chat history per patient/hour, and OpenAI or rule-based responses.}
+\label{fig:tab-dialogue}
+\end{figure}
+
+\begin{figure}[p]
+\centering
+\includegraphics[width=0.92\textwidth]{screenshots/09_clinician_feedback_overlay.png}
+\caption{Clinician feedback overlay: after disagreeing with deterioration, the impact panel shows trajectory revision (STABLE $\rightarrow$ IMPROVING), interpreted feedback notes, clinician-directed actions, and a clinician-adjusted Critical Patient Brief with automated baseline available for comparison.}
+\label{fig:feedback-overlay}
+\end{figure}
+
+\textbf{Discussion.} Grounding agents in eICU-CRD demo data improves external validity over pure simulation while retaining interpretable rule-based reasoning traces. The point-in-time architecture addresses a key clinical requirement: bedside decisions use only information available at a given moment. The feedback overlay prototypes human-in-the-loop decision support without altering factual measurements. Limitations include sparse temperature/SpO$_2$ in some stays, simplified risk scoring (not calibrated to APACHE/SOFA), non-persisted dialogue audit trails, and placeholder LangGraph integration. The hybrid design (eICU first, synthetic fallback) supports reproducible Airflow runs and LLM-enriched dialogue on real clinical text from \code{note} tables.
 
 \newpage
 
@@ -372,17 +535,21 @@ The pipeline was exercised through CLI runs, Streamlit sessions, and repeated Ai
 
 \section{Conclusion}
 
-This project delivered a framework for \textbf{generative clinical narrative and risk explanation} from ICU time-series data, integrating the PhysioNet eICU-CRD demo with the \texttt{icu\_agents} multi-agent stack. SQLite-backed loading, stay-level orchestration, and Airflow DAGs with explicit temporal reasoning traces transform structured measurements into human-readable reports and escalation-aware narratives. The work establishes a foundation for LLM-enhanced ICU decision support and aligns with the M.Tech project goals of improving interpretability through natural-language clinical summaries grounded in real critical-care data.
+This project delivered a framework for \textbf{generative clinical narrative and risk explanation} from ICU time-series data, integrating the PhysioNet eICU-CRD demo with the \code{icu\_agents} multi-agent stack. SQLite-backed loading, stay-level orchestration, and Airflow DAGs with explicit temporal reasoning traces transform structured measurements into human-readable reports and escalation-aware narratives. The Streamlit dashboard adds \textbf{point-in-time clinical review}, a \textbf{Critical Patient Brief} (SBAR, trends, explainable alerts, actions), \textbf{interactive Plotly timeline navigation}, and a \textbf{clinician feedback overlay} that adjusts recommendations while preserving underlying data. The work establishes a foundation for LLM-enhanced, human-in-the-loop ICU decision support and aligns with the M.Tech project goals of improving interpretability through natural-language clinical summaries grounded in real critical-care data.
 
 \section{Future Work}
 
 \begin{itemize}[noitemsep]
+    \item Calibrate risk scores and brief alerts against SOFA/APACHE/qSOFA using full eICU-CRD access.
+    \item Persist clinician feedback and impact logs to \code{output/feedback/} for audit and model improvement.
+    \item Multi-lane unified clinical timeline (vitals, labs, meds, notes on one scrubber).
+    \item PDF/shift-handoff export of Critical Patient Brief at selected hour.
     \item Complete BeeAI agent workflow integration and Agent Stack deployment.
-    \item Expand OpenAI LLM usage for insights and natural-language querying over eICU cohorts.
-    \item Evaluate narratives against clinician review and published LLM summarization benchmarks.
-    \item Calibrate risk scores against SOFA/APACHE using full eICU-CRD access.
+    \item Expand OpenAI LLM usage for differential reasoning and natural-language querying over eICU cohorts.
+    \item Evaluate narratives and brief quality against clinician review and published LLM summarization benchmarks.
     \item Extend cohort analytics (EDA, feature stores) on top of the integrated eICU loader already shared with agents and Airflow.
     \item Add FHIR export and monitoring for Airflow and agent pipeline health.
+    \item Load medication and intervention timelines from eICU \code{medication} and \code{treatment} tables.
 \end{itemize}
 
 \newpage

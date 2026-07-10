@@ -1,0 +1,296 @@
+- generic:
+  - generic [ref=e2]:
+    - generic [ref=e11]:
+      - generic [ref=e13]:
+        - paragraph [ref=e16]: Data source
+        - generic [ref=e18]:
+          - generic [ref=e19]:
+            - generic [ref=e20]: eicu
+            - combobox "Selected eicu. Data source" [ref=e22]
+          - img "open" [ref=e24] [cursor=pointer]
+      - generic [ref=e27]:
+        - paragraph [ref=e30]: eICU patientunitstayid
+        - generic [ref=e32]:
+          - generic [ref=e33]:
+            - generic [ref=e34]: "141764"
+            - combobox "Selected 141764. eICU patientunitstayid" [ref=e36]
+          - img "open" [ref=e38] [cursor=pointer]
+      - paragraph [ref=e43]: Loads vitals, labs, and notes from data/eicu-crd-demo SQLite.
+      - button "Run ICU Pipeline" [ref=e46] [cursor=pointer]:
+        - paragraph [ref=e48]: Run ICU Pipeline
+    - generic [ref=e3]:
+      - banner [ref=e51]:
+        - generic [ref=e54]:
+          - button "Deploy" [ref=e56] [cursor=pointer]:
+            - generic [ref=e58]: Deploy
+          - button [ref=e60] [cursor=pointer]:
+            - img [ref=e61]
+      - generic [ref=e64]:
+        - heading "ICU Multi-Agent Patient Pipeline" [level=1] [ref=e69]: ICU Multi-Agent Patient Pipeline
+        - generic [ref=e735]:
+          - button "Jump to admission (H0)" [ref=e740] [cursor=pointer]:
+            - paragraph [ref=e742]: Jump to admission (H0)
+          - button "Jump to mid-stay (H3)" [ref=e747] [cursor=pointer]:
+            - paragraph [ref=e749]: Jump to mid-stay (H3)
+          - button "Jump to latest (H5)" [ref=e754] [cursor=pointer]:
+            - paragraph [ref=e756]: Jump to latest (H5)
+          - paragraph [ref=e762]: Click chart points to scrub · dashed line = selected hour
+        - generic [ref=e115]:
+          - generic [ref=e116]:
+            - paragraph [ref=e118]: ICU hour (offset from admission)
+            - img [ref=e122]
+          - generic [ref=e125]:
+            - slider "ICU hour (offset from admission)" [ref=e128]:
+              - generic: "5"
+            - generic:
+              - generic: "0"
+              - generic: "5"
+        - heading "Clinician feedback impact on system response" [level=3] [ref=e767]: Clinician feedback impact on system response
+        - paragraph [ref=e771]: Shows how doctor dialogue at this ICU hour adjusts trajectory, alerts, and recommended actions. Vitals and labs remain unchanged — only the clinical interpretation is updated.
+        - generic [ref=e773]:
+          - generic [ref=e778]:
+            - paragraph [ref=e782]: Trajectory
+            - generic [ref=e784]: IMPROVING
+            - generic [ref=e785]:
+              - img [ref=e786]
+              - generic [ref=e789]: was stable
+          - generic [ref=e794]:
+            - paragraph [ref=e798]: Active alerts
+            - generic [ref=e800]: "0"
+            - generic [ref=e801]:
+              - img [ref=e802]
+              - generic [ref=e805]: +0 vs automated
+          - generic [ref=e810]:
+            - paragraph [ref=e814]: Doctor turns
+            - generic [ref=e816]: "1"
+          - generic [ref=e821]:
+            - paragraph [ref=e825]: Confidence
+            - generic [ref=e827]: clinician-adjusted
+        - alert [ref=e830]:
+          - paragraph [ref=e835]:
+            - text: "Overall trajectory revised:"
+            - strong [ref=e836]: STABLE → IMPROVING
+            - text: based on clinician dialogue.
+        - paragraph [ref=e840]:
+          - strong [ref=e841]: What the clinician said (interpreted)
+        - list [ref=e842]:
+          - listitem [ref=e843]: Clinician confirmed the automated assessment.
+        - list [ref=e846]:
+          - listitem [ref=e847]: Clinician disagrees with deterioration view — bedside assessment suggests improvement.
+        - paragraph [ref=e850]:
+          - strong [ref=e851]: New actions added from dialogue
+        - list [ref=e852]:
+          - listitem [ref=e853]: Document clinician override in chart
+        - list [ref=e857]:
+          - listitem [ref=e858]: Continue current plan with focused reassessment in 2–4 hours
+        - separator [ref=e862]
+        - heading "Critical Patient Brief (clinician-adjusted)" [level=3] [ref=e867]: Critical Patient Brief (clinician-adjusted)
+        - paragraph [ref=e872]:
+          - text: "Adjusted view · confidence:"
+          - strong [ref=e873]: clinician-adjusted
+        - paragraph [ref=e877]:
+          - strong [ref=e878]: "Overall trajectory:"
+          - text: ":green_circle:"
+          - strong [ref=e879]: IMPROVING
+          - text: · ICU hour
+          - strong [ref=e880]: "5"
+          - text: · 6-hour lookback trends
+        - generic [ref=e882]:
+          - generic [ref=e887]:
+            - paragraph [ref=e891]: SpO₂ →
+            - generic [ref=e893]: 97.0 %
+            - generic [ref=e894]:
+              - img [ref=e895]
+              - generic [ref=e898]: +0.0% vs H0
+          - generic [ref=e903]:
+            - paragraph [ref=e907]: Heart rate ↓
+            - generic [ref=e909]: 104.0 bpm
+            - generic [ref=e910]:
+              - img [ref=e911]
+              - generic [ref=e914]: "-14.0bpm vs H0"
+          - generic [ref=e919]:
+            - paragraph [ref=e923]: Lactate →
+            - generic [ref=e925]: 0.8 mmol/L
+            - generic [ref=e926]:
+              - img [ref=e927]
+              - generic [ref=e930]: +0.0mmol/L vs H0
+          - generic [ref=e935]:
+            - paragraph [ref=e939]: Creatinine →
+            - generic [ref=e941]: 0.6 mg/dL
+            - generic [ref=e942]:
+              - img [ref=e943]
+              - generic [ref=e946]: +0.0mg/dL vs H0
+          - generic [ref=e951]:
+            - paragraph [ref=e955]: FiO₂ →
+            - generic [ref=e957]: 21.0 %
+            - generic [ref=e958]:
+              - img [ref=e959]
+              - generic [ref=e962]: +0.0% vs H0
+          - generic [ref=e967]:
+            - paragraph [ref=e971]: Active alerts
+            - generic [ref=e973]: "0"
+        - generic [ref=e975]:
+          - generic [ref=e977]:
+            - paragraph [ref=e981]:
+              - strong [ref=e982]: S — Situation
+            - paragraph [ref=e986]: "87y Female · ICU hour 5 · Severity STABLE · Diagnosis: ICU admission (eICU-CRD demo)"
+            - paragraph [ref=e990]:
+              - strong [ref=e991]: B — Background
+            - paragraph [ref=e995]: "Stay 141764. Mechanical ventilation: No. FiO₂ 21%, PEEP 5."
+          - generic [ref=e997]:
+            - paragraph [ref=e1001]:
+              - strong [ref=e1002]: A — Assessment
+            - paragraph [ref=e1006]: "Overall trajectory: stable. Mortality risk estimate 0% (heuristic). HR 104 bpm, SpO₂ 97%, Lactate 0.8 mmol/L. Trends: SpO₂: 97.0 % (→ from 97.0 at H0, Δ +0.00); Heart rate: 104.0 bpm (↓ from 118.0 at H0, Δ -14.00); Lactate: 0.8 mmol/L (→ from 0.8 at H0, Δ +0.00); Creatinine: 0.6 mg/dL (→ from 0.6 at H0, Δ +0.00). Clinician feedback applied: Clinician confirmed the automated assessment. Clinician disagrees with deterioration view — bedside assessment suggests improvement."
+            - paragraph [ref=e1010]:
+              - strong [ref=e1011]: R — Recommendation
+            - paragraph [ref=e1015]: Document clinician override in chart; Continue current plan with focused reassessment in 2–4 hours; Continue hourly monitoring and trend review
+        - paragraph [ref=e1019]:
+          - strong [ref=e1020]: Recommended actions
+        - list [ref=e1024]:
+          - listitem [ref=e1025]:
+            - strong [ref=e1026]: "[LOW]"
+            - text: Document clinician override in chart —
+            - emphasis [ref=e1027]: Record why automated alerts were downgraded.
+            - text: ·
+            - emphasis [ref=e1028]: clinician-directed
+        - list [ref=e1032]:
+          - listitem [ref=e1033]:
+            - strong [ref=e1034]: "[MEDIUM]"
+            - text: Continue current plan with focused reassessment in 2–4 hours —
+            - emphasis [ref=e1035]: Escalation deferred based on clinician bedside judgment.
+            - text: ·
+            - emphasis [ref=e1036]: clinician-directed
+        - list [ref=e1040]:
+          - listitem [ref=e1041]:
+            - strong [ref=e1042]: "[LOW]"
+            - text: Continue hourly monitoring and trend review —
+            - emphasis [ref=e1043]: No high-priority escalation triggers at this hour.
+        - alert [ref=e1046]:
+          - paragraph [ref=e1051]: "Data gaps: No lactate recorded up to this hour · No clinical notes in timeline"
+        - separator [ref=e1055]
+        - group [ref=e1058]:
+          - generic "keyboard_arrow_right View automated baseline (before clinician feedback)" [ref=e1059] [cursor=pointer]:
+            - generic [ref=e1060]:
+              - generic [ref=e1062]: keyboard_arrow_right
+              - paragraph [ref=e1065]: View automated baseline (before clinician feedback)
+        - paragraph [ref=e1069]:
+          - strong [ref=e1070]: Stay 141764
+          - text: ·
+          - strong [ref=e1071]: 87y Female
+          - text: "· Data source:"
+          - strong [ref=e1072]: eicu
+          - text: "· Diagnosis: ICU admission (eICU-CRD demo) · Severity"
+          - strong [ref=e1073]: STABLE
+          - text: ":green-circle: · Mortality risk (heuristic)"
+          - strong [ref=e1074]: 0%
+          - text: · FiO₂
+          - strong [ref=e1075]: 21%
+          - text: · Vent
+          - strong [ref=e1076]: "No"
+        - generic [ref=e1078]:
+          - tablist [ref=e1080]:
+            - tab "Overview" [ref=e1081] [cursor=pointer]:
+              - paragraph [ref=e1083]: Overview
+            - tab "Vitals (time series)" [active] [selected] [ref=e1084] [cursor=pointer]:
+              - paragraph [ref=e1086]: Vitals (time series)
+            - tab "Labs & risk" [ref=e1087] [cursor=pointer]:
+              - paragraph [ref=e1089]: Labs & risk
+            - tab "Clinical narrative" [ref=e1090] [cursor=pointer]:
+              - paragraph [ref=e1092]: Clinical narrative
+            - tab "Doctor dialogue" [ref=e1093] [cursor=pointer]:
+              - paragraph [ref=e1095]: Doctor dialogue
+          - tabpanel "Vitals (time series)" [ref=e1410]:
+            - generic [ref=e1411]:
+              - heading "Vitals through ICU hour 5" [level=3] [ref=e1416]: Vitals through ICU hour 5
+              - generic [ref=e1423]:
+                - img:
+                  - generic:
+                    - generic:
+                      - generic:
+                        - generic:
+                          - generic: "100"
+                        - generic:
+                          - generic: "110"
+                    - generic:
+                      - generic:
+                        - generic:
+                          - generic: "96"
+                        - generic:
+                          - generic: "96.5"
+                        - generic:
+                          - generic: "97"
+                        - generic:
+                          - generic: "97.5"
+                        - generic:
+                          - generic: "98"
+                    - generic:
+                      - generic:
+                        - generic:
+                          - generic: "0"
+                        - generic:
+                          - generic: "1"
+                        - generic:
+                          - generic: "2"
+                        - generic:
+                          - generic: "3"
+                        - generic:
+                          - generic: "4"
+                        - generic:
+                          - generic: "5"
+                      - generic:
+                        - generic:
+                          - generic: "50"
+                        - generic:
+                          - generic: "100"
+                - img:
+                  - generic:
+                    - generic [ref=e1464]:
+                      - generic [ref=e1466]: Heart rate
+                      - generic [ref=e1473]: SpO₂
+                      - generic [ref=e1480]: Resp rate
+                      - generic [ref=e1487]: SBP
+                    - generic:
+                      - generic:
+                        - generic:
+                          - generic: Vitals through ICU hour 5 — click a point to scrub time
+                    - generic:
+                      - generic: ICU hour
+                    - generic:
+                      - generic:
+                        - generic:
+                          - generic: Heart rate
+                    - generic:
+                      - generic:
+                        - generic:
+                          - generic: SpO₂
+                    - generic:
+                      - generic:
+                        - generic:
+                          - generic: Resp rate & SBP
+                - toolbar [ref=e1493]:
+                  - button "Download plot as a PNG" [ref=e1495] [cursor=pointer]:
+                    - img [ref=e1496]
+                  - generic [ref=e1498]:
+                    - button "Zoom" [ref=e1499] [cursor=pointer]:
+                      - img [ref=e1500]
+                    - button "Pan" [ref=e1502] [cursor=pointer]:
+                      - img [ref=e1503]
+                  - generic [ref=e1505]:
+                    - button "Zoom in" [ref=e1506] [cursor=pointer]:
+                      - img [ref=e1507]
+                    - button "Zoom out" [ref=e1509] [cursor=pointer]:
+                      - img [ref=e1510]
+                    - button "Autoscale" [ref=e1512] [cursor=pointer]:
+                      - img [ref=e1513]
+                    - button "Reset axes" [ref=e1515] [cursor=pointer]:
+                      - img [ref=e1516]
+                  - button "Fullscreen" [ref=e1519] [cursor=pointer]:
+                    - img [ref=e1520]
+                - img
+              - paragraph [ref=e1525]: "Current vitals at hour 5: HR 104 bpm, SpO₂ 97%, RR 18/min, Temp 98.6°F, SBP 120"
+              - group [ref=e1528]:
+                - generic "keyboard_arrow_right Vitals history JSON (hours 0–selected)" [ref=e1529] [cursor=pointer]:
+                  - generic [ref=e1530]:
+                    - generic [ref=e1532]: keyboard_arrow_right
+                    - paragraph [ref=e1535]: Vitals history JSON (hours 0–selected)
+  - img [ref=e645]

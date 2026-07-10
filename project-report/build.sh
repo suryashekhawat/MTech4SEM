@@ -14,7 +14,7 @@ usage() {
   cat <<'EOF'
 Usage: ./build.sh [OPTIONS]
 
-Compile main.tex to main.pdf (runs pdflatex twice, or latexmk if available).
+Compile main.tex to main.pdf (tectonic, latexmk, or pdflatex).
 
 Options:
   --placeholders   Create minimal pes_logo.png / system_architecture.png if missing
@@ -39,8 +39,11 @@ find_pdflatex() {
     return 0
   fi
   local candidates=(
+    "/Library/TeX/texbin/pdflatex"
+    "/usr/local/texlive/2024/bin/universal-darwin/pdflatex"
+    "/usr/local/texlive/2023/bin/universal-darwin/pdflatex"
     "/c/Program Files/MiKTeX/miktex/bin/x64/pdflatex.exe"
-    "$LOCALAPPDATA/Programs/MiKTeX/miktex/bin/x64/pdflatex.exe"
+    "${LOCALAPPDATA:-}/Programs/MiKTeX/miktex/bin/x64/pdflatex.exe"
     "${USERPROFILE:-}/AppData/Local/Programs/MiKTeX/miktex/bin/x64/pdflatex.exe"
   )
   local c
@@ -65,30 +68,51 @@ need_pdflatex() {
   export PDFLATEX
 }
 
+create_valid_minimal_png() {
+  local out="$1"
+  python3 - "$out" <<'PY'
+import struct
+import sys
+import zlib
+from pathlib import Path
+
+
+def png_chunk(chunk_type: bytes, data: bytes) -> bytes:
+    payload = chunk_type + data
+    return (
+        struct.pack(">I", len(data))
+        + payload
+        + struct.pack(">I", zlib.crc32(payload) & 0xFFFFFFFF)
+    )
+
+
+def write_minimal_png(path: Path) -> None:
+    ihdr = struct.pack(">IIBBBBB", 1, 1, 8, 2, 0, 0, 0)
+    raw = b"\x00" + b"\xcc\xcc\xcc"
+    png = b"\x89PNG\r\n\x1a\n"
+    png += png_chunk(b"IHDR", ihdr)
+    png += png_chunk(b"IDAT", zlib.compress(raw))
+    png += png_chunk(b"IEND", b"")
+    path.write_bytes(png)
+
+
+write_minimal_png(Path(sys.argv[1]))
+PY
+}
+
 create_placeholder_png() {
   local out="$1"
   if [[ -f "$out" ]]; then
     return 0
   fi
-  if command -v python >/dev/null 2>&1; then
-    python - "$out" <<'PY'
-import sys
-from pathlib import Path
-
-# Minimal valid 1x1 PNG (gray)
-PNG = bytes([
-    0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A,
-    0x00, 0x00, 0x00, 0x0D, 0x49, 0x48, 0x44, 0x52,
-    0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x01,
-    0x08, 0x02, 0x00, 0x00, 0x00, 0x90, 0x77, 0x53,
-    0xDE, 0x00, 0x00, 0x00, 0x0C, 0x49, 0x44, 0x41,
-    0x54, 0x08, 0xD7, 0x63, 0xF8, 0xCF, 0xC0, 0x00,
-    0x00, 0x03, 0x01, 0x01, 0x00, 0x18, 0xDD, 0x8D,
-    0xB4, 0x00, 0x00, 0x00, 0x00, 0x49, 0x45, 0x4E,
-    0x44, 0xAE, 0x42, 0x60, 0x82,
-])
-Path(sys.argv[1]).write_bytes(PNG)
-PY
+  if [[ "$out" == "system_architecture.png" ]] && [[ -f "$SCRIPT_DIR/generate_architecture_png.py" ]]; then
+    if python3 "$SCRIPT_DIR/generate_architecture_png.py"; then
+      echo "Created architecture diagram: $out"
+      return 0
+    fi
+  fi
+  if command -v python3 >/dev/null 2>&1; then
+    create_valid_minimal_png "$out"
     echo "Created placeholder: $out"
   else
     echo "Error: missing $out (use --placeholders with Python, or add the file manually)." >&2
@@ -114,7 +138,37 @@ if ((${#MISSING[@]} > 0)); then
   fi
 fi
 
-if command -v latexmk >/dev/null 2>&1; then
+if [[ ! -f system_architecture.png ]] || ! python3 -c "
+import struct, sys, zlib
+from pathlib import Path
+p = Path('system_architecture.png')
+if not p.exists():
+    sys.exit(1)
+d = p.read_bytes()
+pos = 8
+while pos + 12 <= len(d):
+    ln = struct.unpack('>I', d[pos:pos+4])[0]
+    ct = d[pos+4:pos+8]
+    data = d[pos+8:pos+8+ln]
+    crc = struct.unpack('>I', d[pos+8+ln:pos+12+ln])[0]
+    if zlib.crc32(ct + data) & 0xFFFFFFFF != crc:
+        sys.exit(1)
+    pos += 12 + ln
+    if ct == b'IEND':
+        break
+" 2>/dev/null; then
+  if $PLACEHOLDERS || [[ ! -f system_architecture.png ]]; then
+    create_placeholder_png system_architecture.png
+  fi
+fi
+
+if command -v tectonic >/dev/null 2>&1; then
+  echo "Building with tectonic..."
+  tectonic -X compile "$TEX_FILE"
+  if $CLEAN; then
+    rm -f main.aux main.log main.out main.toc main.lof main.lot main.fls main.fdb_latexmk
+  fi
+elif command -v latexmk >/dev/null 2>&1; then
   echo "Building with latexmk..."
   latexmk -pdf -interaction=nonstopmode -file-line-error "$TEX_FILE"
   if $CLEAN; then

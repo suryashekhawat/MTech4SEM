@@ -1,0 +1,460 @@
+- generic:
+  - generic [ref=e2]:
+    - generic [ref=e11]:
+      - generic [ref=e13]:
+        - paragraph [ref=e16]: Data source
+        - generic [ref=e18]:
+          - generic [ref=e19]:
+            - generic [ref=e20]: eicu
+            - combobox "Selected eicu. Data source" [ref=e22]
+          - img "open" [ref=e24] [cursor=pointer]
+      - generic [ref=e27]:
+        - paragraph [ref=e30]: eICU patientunitstayid
+        - generic [ref=e32]:
+          - generic [ref=e33]:
+            - generic [ref=e34]: "141764"
+            - combobox "Selected 141764. eICU patientunitstayid" [ref=e36]
+          - img "open" [ref=e38] [cursor=pointer]
+      - paragraph [ref=e43]: Loads vitals, labs, and notes from data/eicu-crd-demo SQLite.
+      - button "Run ICU Pipeline" [ref=e46] [cursor=pointer]:
+        - paragraph [ref=e48]: Run ICU Pipeline
+    - generic [ref=e3]:
+      - banner [ref=e51]:
+        - generic [ref=e54]:
+          - button "Deploy" [ref=e56] [cursor=pointer]:
+            - generic [ref=e58]: Deploy
+          - button [ref=e60] [cursor=pointer]:
+            - img [ref=e61]
+      - generic [ref=e64]:
+        - heading "ICU Multi-Agent Patient Pipeline" [level=1] [ref=e69]: ICU Multi-Agent Patient Pipeline
+        - generic [ref=e735]:
+          - button "Jump to admission (H0)" [ref=e740] [cursor=pointer]:
+            - paragraph [ref=e742]: Jump to admission (H0)
+          - button "Jump to mid-stay (H3)" [ref=e747] [cursor=pointer]:
+            - paragraph [ref=e749]: Jump to mid-stay (H3)
+          - button "Jump to latest (H5)" [ref=e754] [cursor=pointer]:
+            - paragraph [ref=e756]: Jump to latest (H5)
+          - paragraph [ref=e762]: Click chart points to scrub · dashed line = selected hour
+        - generic [ref=e115]:
+          - generic [ref=e116]:
+            - paragraph [ref=e118]: ICU hour (offset from admission)
+            - img [ref=e122]
+          - generic [ref=e125]:
+            - slider "ICU hour (offset from admission)" [ref=e128]:
+              - generic: "5"
+            - generic:
+              - generic: "0"
+              - generic: "5"
+        - heading "Clinician feedback impact on system response" [level=3] [ref=e767]: Clinician feedback impact on system response
+        - paragraph [ref=e771]: Shows how doctor dialogue at this ICU hour adjusts trajectory, alerts, and recommended actions. Vitals and labs remain unchanged — only the clinical interpretation is updated.
+        - generic [ref=e773]:
+          - generic [ref=e778]:
+            - paragraph [ref=e782]: Trajectory
+            - generic [ref=e784]: IMPROVING
+            - generic [ref=e785]:
+              - img [ref=e786]
+              - generic [ref=e789]: was stable
+          - generic [ref=e794]:
+            - paragraph [ref=e798]: Active alerts
+            - generic [ref=e800]: "0"
+            - generic [ref=e801]:
+              - img [ref=e802]
+              - generic [ref=e805]: +0 vs automated
+          - generic [ref=e810]:
+            - paragraph [ref=e814]: Doctor turns
+            - generic [ref=e816]: "1"
+          - generic [ref=e821]:
+            - paragraph [ref=e825]: Confidence
+            - generic [ref=e827]: clinician-adjusted
+        - alert [ref=e830]:
+          - paragraph [ref=e835]:
+            - text: "Overall trajectory revised:"
+            - strong [ref=e836]: STABLE → IMPROVING
+            - text: based on clinician dialogue.
+        - paragraph [ref=e840]:
+          - strong [ref=e841]: What the clinician said (interpreted)
+        - list [ref=e842]:
+          - listitem [ref=e843]: Clinician confirmed the automated assessment.
+        - list [ref=e846]:
+          - listitem [ref=e847]: Clinician disagrees with deterioration view — bedside assessment suggests improvement.
+        - paragraph [ref=e850]:
+          - strong [ref=e851]: New actions added from dialogue
+        - list [ref=e852]:
+          - listitem [ref=e853]: Document clinician override in chart
+        - list [ref=e857]:
+          - listitem [ref=e858]: Continue current plan with focused reassessment in 2–4 hours
+        - separator [ref=e862]
+        - heading "Critical Patient Brief (clinician-adjusted)" [level=3] [ref=e867]: Critical Patient Brief (clinician-adjusted)
+        - paragraph [ref=e872]:
+          - text: "Adjusted view · confidence:"
+          - strong [ref=e873]: clinician-adjusted
+        - paragraph [ref=e877]:
+          - strong [ref=e878]: "Overall trajectory:"
+          - text: ":green_circle:"
+          - strong [ref=e879]: IMPROVING
+          - text: · ICU hour
+          - strong [ref=e880]: "5"
+          - text: · 6-hour lookback trends
+        - generic [ref=e882]:
+          - generic [ref=e887]:
+            - paragraph [ref=e891]: SpO₂ →
+            - generic [ref=e893]: 97.0 %
+            - generic [ref=e894]:
+              - img [ref=e895]
+              - generic [ref=e898]: +0.0% vs H0
+          - generic [ref=e903]:
+            - paragraph [ref=e907]: Heart rate ↓
+            - generic [ref=e909]: 104.0 bpm
+            - generic [ref=e910]:
+              - img [ref=e911]
+              - generic [ref=e914]: "-14.0bpm vs H0"
+          - generic [ref=e919]:
+            - paragraph [ref=e923]: Lactate →
+            - generic [ref=e925]: 0.8 mmol/L
+            - generic [ref=e926]:
+              - img [ref=e927]
+              - generic [ref=e930]: +0.0mmol/L vs H0
+          - generic [ref=e935]:
+            - paragraph [ref=e939]: Creatinine →
+            - generic [ref=e941]: 0.6 mg/dL
+            - generic [ref=e942]:
+              - img [ref=e943]
+              - generic [ref=e946]: +0.0mg/dL vs H0
+          - generic [ref=e951]:
+            - paragraph [ref=e955]: FiO₂ →
+            - generic [ref=e957]: 21.0 %
+            - generic [ref=e958]:
+              - img [ref=e959]
+              - generic [ref=e962]: +0.0% vs H0
+          - generic [ref=e967]:
+            - paragraph [ref=e971]: Active alerts
+            - generic [ref=e973]: "0"
+        - generic [ref=e975]:
+          - generic [ref=e977]:
+            - paragraph [ref=e981]:
+              - strong [ref=e982]: S — Situation
+            - paragraph [ref=e986]: "87y Female · ICU hour 5 · Severity STABLE · Diagnosis: ICU admission (eICU-CRD demo)"
+            - paragraph [ref=e990]:
+              - strong [ref=e991]: B — Background
+            - paragraph [ref=e995]: "Stay 141764. Mechanical ventilation: No. FiO₂ 21%, PEEP 5."
+          - generic [ref=e997]:
+            - paragraph [ref=e1001]:
+              - strong [ref=e1002]: A — Assessment
+            - paragraph [ref=e1006]: "Overall trajectory: stable. Mortality risk estimate 0% (heuristic). HR 104 bpm, SpO₂ 97%, Lactate 0.8 mmol/L. Trends: SpO₂: 97.0 % (→ from 97.0 at H0, Δ +0.00); Heart rate: 104.0 bpm (↓ from 118.0 at H0, Δ -14.00); Lactate: 0.8 mmol/L (→ from 0.8 at H0, Δ +0.00); Creatinine: 0.6 mg/dL (→ from 0.6 at H0, Δ +0.00). Clinician feedback applied: Clinician confirmed the automated assessment. Clinician disagrees with deterioration view — bedside assessment suggests improvement."
+            - paragraph [ref=e1010]:
+              - strong [ref=e1011]: R — Recommendation
+            - paragraph [ref=e1015]: Document clinician override in chart; Continue current plan with focused reassessment in 2–4 hours; Continue hourly monitoring and trend review
+        - paragraph [ref=e1019]:
+          - strong [ref=e1020]: Recommended actions
+        - list [ref=e1024]:
+          - listitem [ref=e1025]:
+            - strong [ref=e1026]: "[LOW]"
+            - text: Document clinician override in chart —
+            - emphasis [ref=e1027]: Record why automated alerts were downgraded.
+            - text: ·
+            - emphasis [ref=e1028]: clinician-directed
+        - list [ref=e1032]:
+          - listitem [ref=e1033]:
+            - strong [ref=e1034]: "[MEDIUM]"
+            - text: Continue current plan with focused reassessment in 2–4 hours —
+            - emphasis [ref=e1035]: Escalation deferred based on clinician bedside judgment.
+            - text: ·
+            - emphasis [ref=e1036]: clinician-directed
+        - list [ref=e1040]:
+          - listitem [ref=e1041]:
+            - strong [ref=e1042]: "[LOW]"
+            - text: Continue hourly monitoring and trend review —
+            - emphasis [ref=e1043]: No high-priority escalation triggers at this hour.
+        - alert [ref=e1046]:
+          - paragraph [ref=e1051]: "Data gaps: No lactate recorded up to this hour · No clinical notes in timeline"
+        - separator [ref=e1055]
+        - group [ref=e1058]:
+          - generic "keyboard_arrow_right View automated baseline (before clinician feedback)" [ref=e1059] [cursor=pointer]:
+            - generic [ref=e1060]:
+              - generic [ref=e1062]: keyboard_arrow_right
+              - paragraph [ref=e1065]: View automated baseline (before clinician feedback)
+        - paragraph [ref=e1069]:
+          - strong [ref=e1070]: Stay 141764
+          - text: ·
+          - strong [ref=e1071]: 87y Female
+          - text: "· Data source:"
+          - strong [ref=e1072]: eicu
+          - text: "· Diagnosis: ICU admission (eICU-CRD demo) · Severity"
+          - strong [ref=e1073]: STABLE
+          - text: ":green-circle: · Mortality risk (heuristic)"
+          - strong [ref=e1074]: 0%
+          - text: · FiO₂
+          - strong [ref=e1075]: 21%
+          - text: · Vent
+          - strong [ref=e1076]: "No"
+        - generic [ref=e1078]:
+          - tablist [ref=e1080]:
+            - tab "Overview" [ref=e1081] [cursor=pointer]:
+              - paragraph [ref=e1083]: Overview
+            - tab "Vitals (time series)" [ref=e1084] [cursor=pointer]:
+              - paragraph [ref=e1086]: Vitals (time series)
+            - tab "Labs & risk" [active] [selected] [ref=e1087] [cursor=pointer]:
+              - paragraph [ref=e1089]: Labs & risk
+            - tab "Clinical narrative" [ref=e1090] [cursor=pointer]:
+              - paragraph [ref=e1092]: Clinical narrative
+            - tab "Doctor dialogue" [ref=e1093] [cursor=pointer]:
+              - paragraph [ref=e1095]: Doctor dialogue
+          - tabpanel "Labs & risk" [ref=e1536]:
+            - generic [ref=e1537]:
+              - heading "Laboratory & risk at ICU hour 5" [level=3] [ref=e1542]: Laboratory & risk at ICU hour 5
+              - generic [ref=e1549]:
+                - img:
+                  - generic:
+                    - generic:
+                      - generic:
+                        - generic:
+                          - generic: −1
+                        - generic:
+                          - generic: "0"
+                        - generic:
+                          - generic: "1"
+                        - generic:
+                          - generic: "2"
+                        - generic:
+                          - generic: "3"
+                        - generic:
+                          - generic: "4"
+                        - generic:
+                          - generic: "5"
+                      - generic:
+                        - generic:
+                          - generic: "0"
+                        - generic:
+                          - generic: "2"
+                        - generic:
+                          - generic: "4"
+                - img:
+                  - generic:
+                    - generic:
+                      - generic:
+                        - generic:
+                          - generic: No lab draws recorded by hour 5
+                - toolbar [ref=e1563]:
+                  - button "Download plot as a PNG" [ref=e1565] [cursor=pointer]:
+                    - img [ref=e1566]
+                  - generic [ref=e1568]:
+                    - button "Zoom" [ref=e1569] [cursor=pointer]:
+                      - img [ref=e1570]
+                    - button "Pan" [ref=e1572] [cursor=pointer]:
+                      - img [ref=e1573]
+                  - generic [ref=e1575]:
+                    - button "Zoom in" [ref=e1576] [cursor=pointer]:
+                      - img [ref=e1577]
+                    - button "Zoom out" [ref=e1579] [cursor=pointer]:
+                      - img [ref=e1580]
+                    - button "Autoscale" [ref=e1582] [cursor=pointer]:
+                      - img [ref=e1583]
+                    - button "Reset axes" [ref=e1585] [cursor=pointer]:
+                      - img [ref=e1586]
+                  - button "Fullscreen" [ref=e1589] [cursor=pointer]:
+                    - img [ref=e1590]
+                - img
+              - generic [ref=e1593]:
+                - generic [ref=e1595]:
+                  - heading "Laboratory results" [level=3] [ref=e1600]: Laboratory results
+                  - generic [ref=e1607]:
+                    - img:
+                      - generic:
+                        - generic:
+                          - generic:
+                            - generic:
+                              - generic: WBC
+                            - generic:
+                              - generic: Lactate
+                            - generic:
+                              - generic: Creatinine
+                            - generic:
+                              - generic: Platelets
+                            - generic:
+                              - generic: Hemoglobin
+                          - generic:
+                            - generic:
+                              - generic: "0"
+                            - generic:
+                              - generic: "50"
+                            - generic:
+                              - generic: "100"
+                            - generic:
+                              - generic: "150"
+                            - generic:
+                              - generic: "200"
+                    - img:
+                      - generic:
+                        - generic:
+                          - generic:
+                            - generic:
+                              - generic: Lab panel at ICU hour 5
+                        - generic:
+                          - generic: Analyte
+                        - generic:
+                          - generic: Value
+                    - toolbar [ref=e1621]:
+                      - button "Download plot as a PNG" [ref=e1623] [cursor=pointer]:
+                        - img [ref=e1624]
+                      - generic [ref=e1626]:
+                        - button "Zoom" [ref=e1627] [cursor=pointer]:
+                          - img [ref=e1628]
+                        - button "Pan" [ref=e1630] [cursor=pointer]:
+                          - img [ref=e1631]
+                      - generic [ref=e1633]:
+                        - button "Zoom in" [ref=e1634] [cursor=pointer]:
+                          - img [ref=e1635]
+                        - button "Zoom out" [ref=e1637] [cursor=pointer]:
+                          - img [ref=e1638]
+                        - button "Autoscale" [ref=e1640] [cursor=pointer]:
+                          - img [ref=e1641]
+                        - button "Reset axes" [ref=e1643] [cursor=pointer]:
+                          - img [ref=e1644]
+                      - button "Fullscreen" [ref=e1647] [cursor=pointer]:
+                        - img [ref=e1648]
+                    - img
+                - generic [ref=e1651]:
+                  - heading "Risk scores" [level=3] [ref=e1656]: Risk scores
+                  - generic [ref=e1663]:
+                    - img:
+                      - generic:
+                        - generic:
+                          - generic:
+                            - generic:
+                              - generic: mortality_risk
+                            - generic:
+                              - generic: sepsis_risk
+                            - generic:
+                              - generic: icu_deterioration_risk
+                          - generic:
+                            - generic:
+                              - generic: −1
+                            - generic:
+                              - generic: −0.5
+                            - generic:
+                              - generic: "0"
+                            - generic:
+                              - generic: "0.5"
+                            - generic:
+                              - generic: "1"
+                    - img:
+                      - generic:
+                        - generic:
+                          - generic:
+                            - generic:
+                              - generic: Risk scores at ICU hour 5
+                        - generic:
+                          - generic: Score (%)
+                    - toolbar [ref=e1677]:
+                      - button "Download plot as a PNG" [ref=e1679] [cursor=pointer]:
+                        - img [ref=e1680]
+                      - generic [ref=e1682]:
+                        - button "Zoom" [ref=e1683] [cursor=pointer]:
+                          - img [ref=e1684]
+                        - button "Pan" [ref=e1686] [cursor=pointer]:
+                          - img [ref=e1687]
+                      - generic [ref=e1689]:
+                        - button "Zoom in" [ref=e1690] [cursor=pointer]:
+                          - img [ref=e1691]
+                        - button "Zoom out" [ref=e1693] [cursor=pointer]:
+                          - img [ref=e1694]
+                        - button "Autoscale" [ref=e1696] [cursor=pointer]:
+                          - img [ref=e1697]
+                        - button "Reset axes" [ref=e1699] [cursor=pointer]:
+                          - img [ref=e1700]
+                      - button "Fullscreen" [ref=e1703] [cursor=pointer]:
+                        - img [ref=e1704]
+                    - img
+                  - generic [ref=e1711]:
+                    - generic [ref=e1713] [cursor=pointer]:
+                      - img [ref=e1716]
+                      - generic [ref=e1718]: "{"
+                    - generic [ref=e1720]:
+                      - generic [ref=e1721]:
+                        - generic [ref=e1722]:
+                          - generic [ref=e1723]:
+                            - text: "\""
+                            - generic [ref=e1724]: mortality_risk
+                            - text: "\""
+                          - generic [ref=e1725]: ":"
+                        - generic [ref=e1727]: "0"
+                      - generic [ref=e1728]:
+                        - generic [ref=e1729]:
+                          - generic [ref=e1730]:
+                            - text: "\""
+                            - generic [ref=e1731]: sepsis_risk
+                            - text: "\""
+                          - generic [ref=e1732]: ":"
+                        - generic [ref=e1734]: "0"
+                      - generic [ref=e1735]:
+                        - generic [ref=e1736]:
+                          - generic [ref=e1737]:
+                            - text: "\""
+                            - generic [ref=e1738]: icu_deterioration_risk
+                            - text: "\""
+                          - generic [ref=e1739]: ":"
+                        - generic [ref=e1741]: "0"
+                    - generic [ref=e1743] [cursor=pointer]: "}"
+                  - heading "Respiratory support" [level=3] [ref=e1748]: Respiratory support
+                  - generic [ref=e1755]:
+                    - generic [ref=e1757] [cursor=pointer]:
+                      - img [ref=e1760]
+                      - generic [ref=e1762]: "{"
+                    - generic [ref=e1764]:
+                      - generic [ref=e1765]:
+                        - generic [ref=e1766]:
+                          - generic [ref=e1767]:
+                            - text: "\""
+                            - generic [ref=e1768]: mechanical_ventilation
+                            - text: "\""
+                          - generic [ref=e1769]: ":"
+                        - generic [ref=e1771]: "false"
+                      - generic [ref=e1772]:
+                        - generic [ref=e1773]:
+                          - generic [ref=e1774]:
+                            - text: "\""
+                            - generic [ref=e1775]: fio2
+                            - text: "\""
+                          - generic [ref=e1776]: ":"
+                        - generic [ref=e1778]: "21"
+                      - generic [ref=e1779]:
+                        - generic [ref=e1780]:
+                          - generic [ref=e1781]:
+                            - text: "\""
+                            - generic [ref=e1782]: peep
+                            - text: "\""
+                          - generic [ref=e1783]: ":"
+                        - generic [ref=e1785]: "5"
+                      - generic [ref=e1786]:
+                        - generic [ref=e1787]:
+                          - generic [ref=e1788]:
+                            - text: "\""
+                            - generic [ref=e1789]: source
+                            - text: "\""
+                          - generic [ref=e1790]: ":"
+                        - generic [ref=e1793]: "\"eicu_respiratory\""
+                    - generic [ref=e1795] [cursor=pointer]: "}"
+                  - heading "Radiology / notes" [level=3] [ref=e1800]: Radiology / notes
+                  - generic [ref=e1807]:
+                    - generic [ref=e1809] [cursor=pointer]:
+                      - img [ref=e1812]
+                      - generic [ref=e1814]: "{"
+                    - generic [ref=e1816]:
+                      - generic [ref=e1817]:
+                        - generic [ref=e1818]:
+                          - generic [ref=e1819]:
+                            - text: "\""
+                            - generic [ref=e1820]: report
+                            - text: "\""
+                          - generic [ref=e1821]: ":"
+                        - generic [ref=e1823]: "NULL"
+                      - generic [ref=e1824]:
+                        - generic [ref=e1825]:
+                          - generic [ref=e1826]:
+                            - text: "\""
+                            - generic [ref=e1827]: source
+                            - text: "\""
+                          - generic [ref=e1828]: ":"
+                        - generic [ref=e1831]: "\"synthetic_fallback\""
+                    - generic [ref=e1833] [cursor=pointer]: "}"
+  - img [ref=e645]

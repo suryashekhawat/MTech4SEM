@@ -7,5 +7,6 @@ faker
 pydantic
 streamlit
 matplotlib
+plotly
 scikit-learn
 networkx
