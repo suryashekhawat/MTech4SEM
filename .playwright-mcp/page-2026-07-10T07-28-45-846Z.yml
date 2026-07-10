@@ -1,0 +1,380 @@
+- generic:
+  - generic [ref=e2]:
+    - generic [ref=e11]:
+      - generic [ref=e13]:
+        - paragraph [ref=e16]: Data source
+        - generic [ref=e18]:
+          - generic [ref=e19]:
+            - generic [ref=e20]: eicu
+            - combobox "Selected eicu. Data source" [ref=e22]
+          - img "open" [ref=e24] [cursor=pointer]
+      - generic [ref=e27]:
+        - paragraph [ref=e30]: eICU patientunitstayid
+        - generic [ref=e32]:
+          - generic [ref=e33]:
+            - generic [ref=e34]: "141764"
+            - combobox "Selected 141764. eICU patientunitstayid" [ref=e36]
+          - img "open" [ref=e38] [cursor=pointer]
+      - paragraph [ref=e43]: Loads vitals, labs, and notes from data/eicu-crd-demo SQLite.
+      - button "Run ICU Pipeline" [ref=e46] [cursor=pointer]:
+        - paragraph [ref=e48]: Run ICU Pipeline
+    - generic [ref=e3]:
+      - banner [ref=e51]:
+        - generic [ref=e54]:
+          - button "Deploy" [ref=e56] [cursor=pointer]:
+            - generic [ref=e58]: Deploy
+          - button [ref=e60] [cursor=pointer]:
+            - img [ref=e61]
+      - generic [ref=e64]:
+        - heading "ICU Multi-Agent Patient Pipeline" [level=1] [ref=e69]: ICU Multi-Agent Patient Pipeline
+        - generic [ref=e85]:
+          - button "Jump to admission (H0)" [ref=e90] [cursor=pointer]:
+            - paragraph [ref=e92]: Jump to admission (H0)
+          - button "Jump to mid-stay (H3)" [ref=e97] [cursor=pointer]:
+            - paragraph [ref=e99]: Jump to mid-stay (H3)
+          - button "Jump to latest (H5)" [ref=e104] [cursor=pointer]:
+            - paragraph [ref=e106]: Jump to latest (H5)
+          - paragraph [ref=e112]: Click chart points to scrub · dashed line = selected hour
+        - generic [ref=e115]:
+          - generic [ref=e116]:
+            - paragraph [ref=e118]: ICU hour (offset from admission)
+            - img [ref=e122]
+          - generic [ref=e125]:
+            - slider "ICU hour (offset from admission)" [ref=e128]:
+              - generic: "5"
+            - generic:
+              - generic: "0"
+              - generic: "5"
+        - heading "Critical Patient Brief" [level=3] [ref=e133]: Critical Patient Brief
+        - paragraph [ref=e138]:
+          - strong [ref=e139]: "Overall trajectory:"
+          - text: 🔵
+          - strong [ref=e140]: STABLE
+          - text: · ICU hour
+          - strong [ref=e141]: "5"
+          - text: · 6-hour lookback trends
+        - generic [ref=e143]:
+          - generic [ref=e148]:
+            - paragraph [ref=e152]: SpO₂ →
+            - generic [ref=e154]: 97.0 %
+            - generic [ref=e155]:
+              - img [ref=e156]
+              - generic [ref=e159]: +0.0% vs H0
+          - generic [ref=e164]:
+            - paragraph [ref=e168]: Heart rate ↓
+            - generic [ref=e170]: 104.0 bpm
+            - generic [ref=e171]:
+              - img [ref=e172]
+              - generic [ref=e175]: "-14.0bpm vs H0"
+          - generic [ref=e180]:
+            - paragraph [ref=e184]: Lactate →
+            - generic [ref=e186]: 0.8 mmol/L
+            - generic [ref=e187]:
+              - img [ref=e188]
+              - generic [ref=e191]: +0.0mmol/L vs H0
+          - generic [ref=e196]:
+            - paragraph [ref=e200]: Creatinine →
+            - generic [ref=e202]: 0.6 mg/dL
+            - generic [ref=e203]:
+              - img [ref=e204]
+              - generic [ref=e207]: +0.0mg/dL vs H0
+          - generic [ref=e212]:
+            - paragraph [ref=e216]: FiO₂ →
+            - generic [ref=e218]: 21.0 %
+            - generic [ref=e219]:
+              - img [ref=e220]
+              - generic [ref=e223]: +0.0% vs H0
+          - generic [ref=e228]:
+            - paragraph [ref=e232]: Active alerts
+            - generic [ref=e234]: "0"
+        - generic [ref=e236]:
+          - generic [ref=e238]:
+            - paragraph [ref=e242]:
+              - strong [ref=e243]: S — Situation
+            - paragraph [ref=e247]: "87y Female · ICU hour 5 · Severity STABLE · Diagnosis: ICU admission (eICU-CRD demo)"
+            - paragraph [ref=e251]:
+              - strong [ref=e252]: B — Background
+            - paragraph [ref=e256]: "Stay 141764. Mechanical ventilation: No. FiO₂ 21%, PEEP 5."
+          - generic [ref=e258]:
+            - paragraph [ref=e262]:
+              - strong [ref=e263]: A — Assessment
+            - paragraph [ref=e267]: "Overall trajectory: stable. Mortality risk estimate 0% (heuristic). HR 104 bpm, SpO₂ 97%, Lactate 0.8 mmol/L. Trends: SpO₂: 97.0 % (→ from 97.0 at H0, Δ +0.00); Heart rate: 104.0 bpm (↓ from 118.0 at H0, Δ -14.00); Lactate: 0.8 mmol/L (→ from 0.8 at H0, Δ +0.00); Creatinine: 0.6 mg/dL (→ from 0.6 at H0, Δ +0.00)."
+            - paragraph [ref=e271]:
+              - strong [ref=e272]: R — Recommendation
+            - paragraph [ref=e276]: Continue hourly monitoring and trend review
+        - paragraph [ref=e280]:
+          - strong [ref=e281]: Recommended actions
+        - list [ref=e285]:
+          - listitem [ref=e286]:
+            - strong [ref=e287]: "[LOW]"
+            - text: Continue hourly monitoring and trend review —
+            - emphasis [ref=e288]: No high-priority escalation triggers at this hour.
+        - alert [ref=e291]:
+          - paragraph [ref=e296]: "Data gaps: No lactate recorded up to this hour · No clinical notes in timeline"
+        - separator [ref=e300]
+        - paragraph [ref=e304]:
+          - strong [ref=e305]: Stay 141764
+          - text: ·
+          - strong [ref=e306]: 87y Female
+          - text: "· Data source:"
+          - strong [ref=e307]: eicu
+          - text: "· Diagnosis: ICU admission (eICU-CRD demo) · Severity"
+          - strong [ref=e308]: STABLE
+          - text: ":green-circle: · Mortality risk (heuristic)"
+          - strong [ref=e309]: 0%
+          - text: · FiO₂
+          - strong [ref=e310]: 21%
+          - text: · Vent
+          - strong [ref=e311]: "No"
+        - generic [ref=e313]:
+          - tablist [ref=e315]:
+            - tab "Overview" [active] [selected] [ref=e316] [cursor=pointer]:
+              - paragraph [ref=e318]: Overview
+            - tab "Vitals (time series)" [ref=e319] [cursor=pointer]:
+              - paragraph [ref=e321]: Vitals (time series)
+            - tab "Labs & risk" [ref=e322] [cursor=pointer]:
+              - paragraph [ref=e324]: Labs & risk
+            - tab "Clinical narrative" [ref=e325] [cursor=pointer]:
+              - paragraph [ref=e327]: Clinical narrative
+            - tab "Doctor dialogue" [ref=e328] [cursor=pointer]:
+              - paragraph [ref=e330]: Doctor dialogue
+          - tabpanel "Overview" [ref=e333]:
+            - generic [ref=e334]:
+              - heading "Overview at ICU hour 5" [level=3] [ref=e339]: Overview at ICU hour 5
+              - paragraph [ref=e344]:
+                - strong [ref=e345]: "Severity:"
+                - text: ":green-circle:"
+                - strong [ref=e346]: STABLE
+                - text: · HR 104 bpm · SpO₂ 97% · Lactate 0.8
+              - generic [ref=e348]:
+                - generic [ref=e356]:
+                  - img:
+                    - generic:
+                      - generic:
+                        - generic:
+                          - generic:
+                            - generic: "0"
+                          - generic:
+                            - generic: "1"
+                          - generic:
+                            - generic: "2"
+                          - generic:
+                            - generic: "3"
+                          - generic:
+                            - generic: "4"
+                          - generic:
+                            - generic: "5"
+                        - generic:
+                          - generic:
+                            - generic: "20"
+                          - generic:
+                            - generic: "40"
+                          - generic:
+                            - generic: "60"
+                          - generic:
+                            - generic: "80"
+                          - generic:
+                            - generic: "100"
+                          - generic:
+                            - generic: "120"
+                  - img:
+                    - generic:
+                      - generic [ref=e373]:
+                        - generic [ref=e375]: Heart rate
+                        - generic [ref=e382]: SpO₂
+                        - generic [ref=e389]: Resp rate
+                      - generic:
+                        - generic:
+                          - generic: Overview vitals · hour 5 selected
+                      - generic:
+                        - generic: ICU hour
+                  - toolbar [ref=e395]:
+                    - button "Download plot as a PNG" [ref=e397] [cursor=pointer]:
+                      - img [ref=e398]
+                    - generic [ref=e400]:
+                      - button "Zoom" [ref=e401] [cursor=pointer]:
+                        - img [ref=e402]
+                      - button "Pan" [ref=e404] [cursor=pointer]:
+                        - img [ref=e405]
+                    - generic [ref=e407]:
+                      - button "Zoom in" [ref=e408] [cursor=pointer]:
+                        - img [ref=e409]
+                      - button "Zoom out" [ref=e411] [cursor=pointer]:
+                        - img [ref=e412]
+                      - button "Autoscale" [ref=e414] [cursor=pointer]:
+                        - img [ref=e415]
+                      - button "Reset axes" [ref=e417] [cursor=pointer]:
+                        - img [ref=e418]
+                    - button "Fullscreen" [ref=e421] [cursor=pointer]:
+                      - img [ref=e422]
+                  - img
+                - generic [ref=e431]:
+                  - img:
+                    - generic:
+                      - generic:
+                        - generic:
+                          - generic:
+                            - generic: "0"
+                          - generic:
+                            - generic: "2"
+                          - generic:
+                            - generic: "4"
+                        - generic:
+                          - generic:
+                            - generic: "0"
+                          - generic:
+                            - generic: "20"
+                          - generic:
+                            - generic: "40"
+                          - generic:
+                            - generic: "60"
+                          - generic:
+                            - generic: "80"
+                          - generic:
+                            - generic: "100"
+                  - img:
+                    - generic:
+                      - generic [ref=e450]: Temperature
+                      - generic:
+                        - generic:
+                          - generic: Temperature · hour 5
+                      - generic:
+                        - generic: ICU hour
+                  - toolbar [ref=e458]:
+                    - button "Download plot as a PNG" [ref=e460] [cursor=pointer]:
+                      - img [ref=e461]
+                    - generic [ref=e463]:
+                      - button "Zoom" [ref=e464] [cursor=pointer]:
+                        - img [ref=e465]
+                      - button "Pan" [ref=e467] [cursor=pointer]:
+                        - img [ref=e468]
+                    - generic [ref=e470]:
+                      - button "Zoom in" [ref=e471] [cursor=pointer]:
+                        - img [ref=e472]
+                      - button "Zoom out" [ref=e474] [cursor=pointer]:
+                        - img [ref=e475]
+                      - button "Autoscale" [ref=e477] [cursor=pointer]:
+                        - img [ref=e478]
+                      - button "Reset axes" [ref=e480] [cursor=pointer]:
+                        - img [ref=e481]
+                    - button "Fullscreen" [ref=e484] [cursor=pointer]:
+                      - img [ref=e485]
+                  - img
+              - generic [ref=e491]:
+                - button "Show/hide columns" [ref=e495] [cursor=pointer]:
+                  - img [ref=e496]
+                - button "Download as CSV" [ref=e501] [cursor=pointer]:
+                  - img [ref=e502]
+                - button "Search" [ref=e507] [cursor=pointer]:
+                  - img [ref=e508]
+                - button "Fullscreen" [ref=e513] [cursor=pointer]:
+                  - img [ref=e514]
+              - heading "Laboratory panel known at hour 5" [level=3] [ref=e529]: Laboratory panel known at hour 5
+              - generic [ref=e536]:
+                - img:
+                  - generic:
+                    - generic:
+                      - generic:
+                        - generic:
+                          - generic: WBC
+                        - generic:
+                          - generic: Lactate
+                        - generic:
+                          - generic: Creatinine
+                        - generic:
+                          - generic: Platelets
+                        - generic:
+                          - generic: Hemoglobin
+                      - generic:
+                        - generic:
+                          - generic: "0"
+                        - generic:
+                          - generic: "50"
+                        - generic:
+                          - generic: "100"
+                        - generic:
+                          - generic: "150"
+                        - generic:
+                          - generic: "200"
+                - img:
+                  - generic:
+                    - generic:
+                      - generic:
+                        - generic: Lab panel at ICU hour 5
+                    - generic:
+                      - generic: Analyte
+                    - generic:
+                      - generic: Value
+                - toolbar [ref=e550]:
+                  - button "Download plot as a PNG" [ref=e552] [cursor=pointer]:
+                    - img [ref=e553]
+                  - generic [ref=e555]:
+                    - button "Zoom" [ref=e556] [cursor=pointer]:
+                      - img [ref=e557]
+                    - button "Pan" [ref=e559] [cursor=pointer]:
+                      - img [ref=e560]
+                  - generic [ref=e562]:
+                    - button "Zoom in" [ref=e563] [cursor=pointer]:
+                      - img [ref=e564]
+                    - button "Zoom out" [ref=e566] [cursor=pointer]:
+                      - img [ref=e567]
+                    - button "Autoscale" [ref=e569] [cursor=pointer]:
+                      - img [ref=e570]
+                    - button "Reset axes" [ref=e572] [cursor=pointer]:
+                      - img [ref=e573]
+                  - button "Fullscreen" [ref=e576] [cursor=pointer]:
+                    - img [ref=e577]
+                - img
+              - generic [ref=e584]:
+                - img:
+                  - generic:
+                    - generic:
+                      - generic:
+                        - generic:
+                          - generic: "0"
+                        - generic:
+                          - generic: "1"
+                        - generic:
+                          - generic: "2"
+                        - generic:
+                          - generic: "3"
+                        - generic:
+                          - generic: "4"
+                        - generic:
+                          - generic: "5"
+                      - generic:
+                        - generic:
+                          - generic: admission
+                        - generic:
+                          - generic: vitals
+                - img:
+                  - generic:
+                    - generic [ref=e601]:
+                      - generic [ref=e603]: admission
+                      - generic [ref=e610]: vitals
+                    - generic:
+                      - generic:
+                        - generic: Clinical events timeline (hours 0–5)
+                    - generic:
+                      - generic: ICU hour
+                - toolbar [ref=e616]:
+                  - button "Download plot as a PNG" [ref=e618] [cursor=pointer]:
+                    - img [ref=e619]
+                  - generic [ref=e621]:
+                    - button "Zoom" [ref=e622] [cursor=pointer]:
+                      - img [ref=e623]
+                    - button "Pan" [ref=e625] [cursor=pointer]:
+                      - img [ref=e626]
+                  - generic [ref=e628]:
+                    - button "Zoom in" [ref=e629] [cursor=pointer]:
+                      - img [ref=e630]
+                    - button "Zoom out" [ref=e632] [cursor=pointer]:
+                      - img [ref=e633]
+                    - button "Autoscale" [ref=e635] [cursor=pointer]:
+                      - img [ref=e636]
+                    - button "Reset axes" [ref=e638] [cursor=pointer]:
+                      - img [ref=e639]
+                  - button "Fullscreen" [ref=e642] [cursor=pointer]:
+                    - img [ref=e643]
+                - img
+  - img [ref=e645]
